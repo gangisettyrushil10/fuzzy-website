@@ -129,9 +129,9 @@
       font-size: 12px; color: var(--fg-subtle);
     }
 
-    /* ── App Mockup ──────────────────────────────────────── */
+    /* ── App Screenshot ─────────────────────────────────── */
     .mockup-wrap {
-      max-width: 980px; margin: 72px auto 0;
+      max-width: 1000px; margin: 72px auto 0;
       padding: 0 24px;
     }
 
@@ -139,132 +139,12 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       overflow: hidden;
-      background: var(--surface);
-      box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+      box-shadow: 0 40px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
     }
 
-    /* window chrome */
-    .mockup-chrome {
-      display: flex; align-items: center; gap: 8px;
-      padding: 12px 16px;
-      background: var(--surface-2);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .traffic { width: 12px; height: 12px; border-radius: 50%; }
-    .traffic.r { background: #ff5f57; }
-    .traffic.y { background: #febc2e; }
-    .traffic.g { background: #28c840; }
-
-    .mock-title {
-      flex: 1; text-align: center;
-      font-size: 12px; color: var(--fg-subtle);
-    }
-
-    /* three-column app layout */
-    .mockup-body {
-      display: grid;
-      grid-template-columns: 200px 1fr 260px;
-      height: 400px;
-    }
-
-    .mock-sidebar {
-      background: var(--surface-2);
-      border-right: 1px solid var(--border);
-      padding: 12px 10px;
-      overflow: hidden;
-    }
-
-    .mock-label {
-      font-size: 9px; font-weight: 600; letter-spacing: .08em;
-      text-transform: uppercase; color: var(--fg-subtle);
-      padding: 4px 6px; margin-bottom: 8px;
-    }
-
-    .mock-doc {
-      display: flex; align-items: center; gap: 6px;
-      padding: 5px 8px; border-radius: 5px;
-      font-size: 11px; color: var(--fg-muted);
-      margin-bottom: 2px;
-    }
-    .mock-doc.active {
-      background: rgba(232,135,74,.12);
-      color: var(--fg);
-    }
-
-    .mock-doc-icon { font-size: 10px; }
-
-    .mock-chapter {
-      padding: 3px 8px 3px 22px;
-      font-size: 10px; color: var(--fg-subtle);
-      border-left: 1px solid var(--border);
-      margin-left: 12px;
-    }
-
-    .mock-reader {
-      padding: 28px 32px;
-      overflow: hidden;
-    }
-
-    .mock-reader-title {
-      font-size: 18px; font-weight: 600; color: var(--fg);
-      margin-bottom: 14px; letter-spacing: -.01em;
-    }
-
-    .mock-text-line {
-      height: 10px; border-radius: 3px;
-      background: var(--surface-2);
-      margin-bottom: 8px;
-    }
-
-    .mock-text-line.short { width: 65%; }
-    .mock-text-line.shorter { width: 40%; }
-
-    .mock-highlight {
-      display: inline-block;
-      background: rgba(232,135,74,.18);
-      border-radius: 2px;
-      height: 10px; width: 45%;
-      margin-bottom: 8px;
-    }
-
-    .mock-ai-panel {
-      border-left: 1px solid var(--border);
-      display: flex; flex-direction: column;
-    }
-
-    .mock-ai-tabs {
-      display: flex; gap: 2px;
-      padding: 8px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mock-tab {
-      padding: 3px 8px; border-radius: 4px;
-      font-size: 10px; color: var(--fg-subtle);
-    }
-    .mock-tab.active {
-      background: var(--surface);
-      color: var(--fg);
-    }
-
-    .mock-ai-body { padding: 12px; flex: 1; }
-
-    .mock-ai-msg {
-      padding: 8px 10px; border-radius: 6px;
-      font-size: 10px; line-height: 1.5;
-      margin-bottom: 8px;
-    }
-
-    .mock-ai-msg.user {
-      background: var(--surface);
-      color: var(--fg-muted);
-    }
-
-    .mock-ai-msg.ai {
-      background: rgba(232,135,74,.08);
-      color: var(--fg-muted);
-      border: 1px solid rgba(232,135,74,.15);
+    .mockup img {
+      display: block; width: 100%;
+      border-radius: 12px;
     }
 
     /* ── Section divider ─────────────────────────────────── */
@@ -514,16 +394,13 @@
   </p>
 </section>
 
-<!-- ── App Mockup ──────────────────────────────────────────── -->
+<!-- ── App Screenshot ──────────────────────────────────────── -->
 <div class="mockup-wrap">
   <div class="mockup">
-    <div class="mockup-chrome">
-      <div class="traffic r"></div>
-      <div class="traffic y"></div>
-      <div class="traffic g"></div>
-      <div class="mock-title">Crime and Punishment — Dostoevsky.epub — Fuzzy</div>
-    </div>
-    <div class="mockup-body">
+    <img src="assets/reader.png" alt="Fuzzy reading The Great Gatsby — paper theme reader with AI panel" />
+  </div>
+</div>
+<div style="display:none"><div class="mockup-body">
 
       <!-- Sidebar -->
       <div class="mock-sidebar">
@@ -590,7 +467,7 @@
 
     </div>
   </div>
-</div>
+</div></div>
 
 <!-- ── Features ────────────────────────────────────────────── -->
 <div id="features" class="features" style="margin-top: 120px;">
@@ -611,23 +488,8 @@
         <span class="pill">Summarise</span>
       </div>
     </div>
-    <div class="feat-visual">
-      <div class="feat-visual-chrome">
-        <div class="traffic r"></div>
-        <div class="traffic y"></div>
-        <div class="traffic g"></div>
-      </div>
-      <div class="feat-visual-body">
-        <div class="tutor-selection">
-          "The man who has a conscience suffers whilst acknowledging his sin.
-          <mark>That is his punishment — as well as the prison.</mark>"
-          — Crime and Punishment, Dostoevsky
-        </div>
-        <div class="tutor-response">
-          <div class="tutor-response-label">✦ Fuzzy</div>
-          Dostoevsky argues that guilt itself is the real sentence. Raskolnikov's psychological torment before any arrest shows this — external punishment merely externalises what the conscience already inflicts. It's a deeply Christian idea: confession and suffering are redemptive, not just punitive.
-        </div>
-      </div>
+    <div class="feat-visual" style="aspect-ratio: unset; background: none; border: none;">
+      <img src="assets/tutor.png" alt="Fuzzy AI Ask panel open alongside The Great Gatsby" style="width:100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 20px 48px rgba(0,0,0,.4);" />
     </div>
   </div>
 
@@ -649,25 +511,8 @@
         <span class="pill">TXT</span>
       </div>
     </div>
-    <div class="feat-visual">
-      <div class="feat-visual-chrome">
-        <div class="traffic r"></div>
-        <div class="traffic y"></div>
-        <div class="traffic g"></div>
-      </div>
-      <div class="feat-visual-body">
-        <div class="reader-page">
-          <div style="font-size:15px; font-weight:700; margin-bottom:12px; letter-spacing:-.01em">
-            Chapter I
-          </div>
-          It is a truth universally acknowledged, that a single man in possession
-          of a good fortune, must be in want of a wife. However little known the
-          feelings or views of such a man may be on his first entering a neighbourhood,
-          this truth is so well fixed in the minds of the surrounding families…
-          <br/><br/>
-          <span style="font-size:11px; color:#7a6a55">— Pride and Prejudice, Jane Austen</span>
-        </div>
-      </div>
+    <div class="feat-visual" style="aspect-ratio: unset; background: none; border: none;">
+      <img src="assets/typography.png" alt="Fuzzy typography controls — font, page theme, line height, column width" style="width:100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 20px 48px rgba(0,0,0,.4);" />
     </div>
   </div>
 
@@ -686,35 +531,8 @@
         <span class="pill">Annotations</span>
       </div>
     </div>
-    <div class="feat-visual">
-      <div class="feat-visual-chrome">
-        <div class="traffic r"></div>
-        <div class="traffic y"></div>
-        <div class="traffic g"></div>
-      </div>
-      <div class="feat-visual-body" style="padding: 16px;">
-        <div class="lib-item open">
-          <span style="font-size:11px">▾</span>
-          <span style="flex:1; font-size:12px">Crime and Punishment</span>
-          <span class="lib-badge">epub</span>
-        </div>
-        <div class="lib-chapters">
-          <div class="lib-ch">Pt. I · The Plan</div>
-          <div class="lib-ch" style="color: var(--fg-muted)">Pt. II · The Crime</div>
-          <div class="lib-ch">Pt. III · The Pursuit</div>
-          <div class="lib-ch">Pt. VI · Confession</div>
-        </div>
-        <div class="lib-item">
-          <span style="font-size:11px">›</span>
-          <span style="flex:1; font-size:12px">Meditations — Marcus Aurelius</span>
-          <span class="lib-badge">epub</span>
-        </div>
-        <div class="lib-item">
-          <span style="font-size:11px">›</span>
-          <span style="flex:1; font-size:12px">Thinking, Fast and Slow</span>
-          <span class="lib-badge">pdf</span>
-        </div>
-      </div>
+    <div class="feat-visual" style="aspect-ratio: unset; background: none; border: none;">
+      <img src="assets/library.png" alt="Fuzzy library sidebar with The Great Gatsby open" style="width:100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 20px 48px rgba(0,0,0,.4);" />
     </div>
   </div>
 
