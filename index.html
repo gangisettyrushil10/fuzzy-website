@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fuzzy — AI reading workspace for Mac</title>
+  <meta name="description" content="Fuzzy is a Mac-native reading workspace with a built-in AI tutor. Understand every PDF, EPUB, and book you read." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #111113;
+      --surface-2: #18181b;
+      --border:    rgba(255,255,255,.07);
+      --border-2:  rgba(255,255,255,.04);
+      --fg:        #e8e8ea;
+      --fg-muted:  #82828c;
+      --fg-subtle: #46464f;
+      --accent:    #e8874a;
+      --accent-dim:#e8874a22;
+      --radius:    10px;
+      --font:      'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ─────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 52px;
+      background: rgba(11,11,12,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 15px; font-weight: 500; letter-spacing: -.01em;
+    }
+
+    .nav-logo-icon {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 28px;
+      list-style: none;
+      font-size: 13.5px; color: var(--fg-muted);
+    }
+
+    .nav-links a:hover { color: var(--fg); }
+
+    .btn-dl {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 16px;
+      background: var(--fg); color: var(--bg);
+      border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      transition: opacity .15s;
+      white-space: nowrap;
+    }
+    .btn-dl:hover { opacity: .88; }
+
+    /* ── Hero ────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 100px 24px 80px;
+      max-width: 740px; margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px; color: var(--fg-muted);
+      margin-bottom: 32px;
+    }
+
+    .hero-badge span { color: var(--accent); font-weight: 500; }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 58px);
+      font-weight: 600; letter-spacing: -.03em; line-height: 1.08;
+      margin-bottom: 20px;
+    }
+
+    h1 em { font-style: normal; color: var(--fg-muted); }
+
+    .hero-sub {
+      font-size: 17px; color: var(--fg-muted); line-height: 1.6;
+      max-width: 520px; margin: 0 auto 40px;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; flex-wrap: wrap;
+    }
+
+    .btn-dl-hero {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 24px;
+      background: var(--fg); color: var(--bg);
+      border-radius: 10px;
+      font-size: 14.5px; font-weight: 500;
+      transition: opacity .15s;
+    }
+    .btn-dl-hero:hover { opacity: .88; }
+
+    .hero-note {
+      font-size: 12px; color: var(--fg-subtle);
+    }
+
+    /* ── App Mockup ──────────────────────────────────────── */
+    .mockup-wrap {
+      max-width: 980px; margin: 72px auto 0;
+      padding: 0 24px;
+    }
+
+    .mockup {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    /* window chrome */
+    .mockup-chrome {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 16px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .traffic { width: 12px; height: 12px; border-radius: 50%; }
+    .traffic.r { background: #ff5f57; }
+    .traffic.y { background: #febc2e; }
+    .traffic.g { background: #28c840; }
+
+    .mock-title {
+      flex: 1; text-align: center;
+      font-size: 12px; color: var(--fg-subtle);
+    }
+
+    /* three-column app layout */
+    .mockup-body {
+      display: grid;
+      grid-template-columns: 200px 1fr 260px;
+      height: 400px;
+    }
+
+    .mock-sidebar {
+      background: var(--surface-2);
+      border-right: 1px solid var(--border);
+      padding: 12px 10px;
+      overflow: hidden;
+    }
+
+    .mock-label {
+      font-size: 9px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--fg-subtle);
+      padding: 4px 6px; margin-bottom: 8px;
+    }
+
+    .mock-doc {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 8px; border-radius: 5px;
+      font-size: 11px; color: var(--fg-muted);
+      margin-bottom: 2px;
+    }
+    .mock-doc.active {
+      background: rgba(232,135,74,.12);
+      color: var(--fg);
+    }
+
+    .mock-doc-icon { font-size: 10px; }
+
+    .mock-chapter {
+      padding: 3px 8px 3px 22px;
+      font-size: 10px; color: var(--fg-subtle);
+      border-left: 1px solid var(--border);
+      margin-left: 12px;
+    }
+
+    .mock-reader {
+      padding: 28px 32px;
+      overflow: hidden;
+    }
+
+    .mock-reader-title {
+      font-size: 18px; font-weight: 600; color: var(--fg);
+      margin-bottom: 14px; letter-spacing: -.01em;
+    }
+
+    .mock-text-line {
+      height: 10px; border-radius: 3px;
+      background: var(--surface-2);
+      margin-bottom: 8px;
+    }
+
+    .mock-text-line.short { width: 65%; }
+    .mock-text-line.shorter { width: 40%; }
+
+    .mock-highlight {
+      display: inline-block;
+      background: rgba(232,135,74,.18);
+      border-radius: 2px;
+      height: 10px; width: 45%;
+      margin-bottom: 8px;
+    }
+
+    .mock-ai-panel {
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+
+    .mock-ai-tabs {
+      display: flex; gap: 2px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mock-tab {
+      padding: 3px 8px; border-radius: 4px;
+      font-size: 10px; color: var(--fg-subtle);
+    }
+    .mock-tab.active {
+      background: var(--surface);
+      color: var(--fg);
+    }
+
+    .mock-ai-body { padding: 12px; flex: 1; }
+
+    .mock-ai-msg {
+      padding: 8px 10px; border-radius: 6px;
+      font-size: 10px; line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .mock-ai-msg.user {
+      background: var(--surface);
+      color: var(--fg-muted);
+    }
+
+    .mock-ai-msg.ai {
+      background: rgba(232,135,74,.08);
+      color: var(--fg-muted);
+      border: 1px solid rgba(232,135,74,.15);
+    }
+
+    /* ── Section divider ─────────────────────────────────── */
+    .section-divider {
+      border: none; border-top: 1px solid var(--border-2);
+      margin: 0;
+    }
+
+    /* ── Feature sections ────────────────────────────────── */
+    .features { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+    .feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border-2);
+    }
+
+    .feature:last-child { border-bottom: none; }
+
+    .feature.flip { direction: rtl; }
+    .feature.flip > * { direction: ltr; }
+
+    .feat-num {
+      font-size: 11px; font-weight: 500; letter-spacing: .08em;
+      color: var(--fg-subtle); text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .feat-title {
+      font-size: 28px; font-weight: 600;
+      letter-spacing: -.025em; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .feat-body {
+      font-size: 15px; color: var(--fg-muted); line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .feat-pills {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+
+    .pill {
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px; color: var(--fg-muted);
+    }
+
+    /* feature visual panels */
+    .feat-visual {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      display: flex; flex-direction: column;
+    }
+
+    .feat-visual-chrome {
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .feat-visual-body { flex: 1; padding: 20px; }
+
+    /* tutor visual */
+    .tutor-selection {
+      font-size: 13px; line-height: 1.7; color: var(--fg-muted);
+      margin-bottom: 20px;
+    }
+
+    .tutor-selection mark {
+      background: rgba(232,135,74,.25);
+      color: var(--fg);
+      border-radius: 2px; padding: 1px 0;
+    }
+
+    .tutor-response {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 12px; color: var(--fg-muted); line-height: 1.6;
+    }
+
+    .tutor-response-label {
+      font-size: 10px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    /* reader visual */
+    .reader-page {
+      background: #f7f3ea;
+      border-radius: 8px;
+      padding: 20px;
+      font-family: Georgia, serif;
+      font-size: 13px; line-height: 1.8;
+      color: #2a2318;
+    }
+
+    /* library visual */
+    .lib-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 6px;
+      margin-bottom: 4px;
+      font-size: 12px; color: var(--fg-muted);
+      border: 1px solid var(--border-2);
+    }
+    .lib-item.open { border-color: var(--border); color: var(--fg); }
+    .lib-badge {
+      font-size: 9px; font-weight: 600; padding: 2px 6px;
+      border-radius: 3px; background: var(--surface-2);
+      color: var(--fg-subtle); text-transform: uppercase; letter-spacing: .05em;
+    }
+    .lib-chapters {
+      margin-left: 28px; margin-bottom: 4px;
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+    }
+    .lib-ch {
+      font-size: 11px; color: var(--fg-subtle);
+      padding: 2px 0;
+    }
+
+    /* study pack visual */
+    .card-stack { position: relative; }
+    .flash-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 12.5px;
+      margin-bottom: 8px;
+    }
+    .flash-card .q { color: var(--fg-muted); margin-bottom: 8px; }
+    .flash-card .a {
+      color: var(--fg);
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── CTA section ─────────────────────────────────────── */
+    .cta {
+      text-align: center;
+      padding: 120px 24px;
+      border-top: 1px solid var(--border-2);
+    }
+
+    .cta h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 600; letter-spacing: -.025em;
+      line-height: 1.1; margin-bottom: 18px;
+    }
+
+    .cta p {
+      font-size: 16px; color: var(--fg-muted);
+      max-width: 420px; margin: 0 auto 40px;
+    }
+
+    .cta-meta {
+      margin-top: 20px;
+      font-size: 12.5px; color: var(--fg-subtle);
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px;
+    }
+
+    .cta-meta span::before { content: "·"; margin-right: 16px; }
+    .cta-meta span:first-child::before { content: ""; margin: 0; }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+    }
+
+    .footer-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 500; color: var(--fg-muted);
+    }
+
+    .footer-links {
+      display: flex; gap: 24px; list-style: none;
+      font-size: 13px; color: var(--fg-subtle);
+    }
+
+    .footer-links a:hover { color: var(--fg-muted); }
+
+    .footer-copy {
+      font-size: 12.5px; color: var(--fg-subtle);
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 760px) {
+      nav { padding: 0 18px; }
+      .nav-links { display: none; }
+      .feature { grid-template-columns: 1fr; gap: 40px; padding: 64px 0; }
+      .feature.flip { direction: ltr; }
+      .mockup-body { grid-template-columns: 1fr; height: auto; }
+      .mock-sidebar { display: none; }
+      .mock-ai-panel { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────────────── -->
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-icon">✦</div>
+    Fuzzy
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">GitHub</a></li>
+  </ul>
+  <a class="btn-dl" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
+    ↓ Download for Mac
+  </a>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-badge">
+    <span>New</span> Free to download · macOS 13+
+  </div>
+  <h1>Read smarter.<br /><em>Understand everything.</em></h1>
+  <p class="hero-sub">
+    Fuzzy is a Mac-native reading workspace with a built-in AI tutor.
+    Select any text, ask any question, and actually understand what you're reading.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
+      ↓ &nbsp;Download Fuzzy for Mac
+    </a>
+  </div>
+  <p style="margin-top:14px; font-size:12.5px; color: var(--fg-subtle);">
+    macOS 13 Ventura or later &nbsp;·&nbsp; Free &nbsp;·&nbsp; No account required
+  </p>
+</section>
+
+<!-- ── App Mockup ──────────────────────────────────────────── -->
+<div class="mockup-wrap">
+  <div class="mockup">
+    <div class="mockup-chrome">
+      <div class="traffic r"></div>
+      <div class="traffic y"></div>
+      <div class="traffic g"></div>
+      <div class="mock-title">All_the_Young_Dudes.epub — Fuzzy</div>
+    </div>
+    <div class="mockup-body">
+
+      <!-- Sidebar -->
+      <div class="mock-sidebar">
+        <div class="mock-label">Library</div>
+        <div class="mock-doc active">
+          <span class="mock-doc-icon">▾</span>
+          All_the_Young_Dudes
+        </div>
+        <div class="mock-chapter">Ch. 1 · The Beginning</div>
+        <div class="mock-chapter">Ch. 2 · Lessons</div>
+        <div class="mock-chapter">Ch. 3 · Charms</div>
+        <div class="mock-doc" style="margin-top:6px">
+          <span class="mock-doc-icon">›</span>
+          big-bang-theory.pdf
+        </div>
+        <div style="margin-top: 20px;">
+          <div class="mock-label">Notes</div>
+          <div style="font-size:10px; color: var(--fg-subtle); padding: 0 6px;">2 saved notes</div>
+        </div>
+      </div>
+
+      <!-- Reader -->
+      <div class="mock-reader">
+        <div class="mock-reader-title">Chapter 2 · First Lessons</div>
+        <div class="mock-text-line"></div>
+        <div class="mock-text-line"></div>
+        <div class="mock-text-line short"></div>
+        <div style="height:12px"></div>
+        <div class="mock-highlight"></div>
+        <div class="mock-text-line"></div>
+        <div class="mock-text-line short"></div>
+        <div style="height:12px"></div>
+        <div class="mock-text-line"></div>
+        <div class="mock-text-line"></div>
+        <div class="mock-text-line shorter"></div>
+        <div style="height:12px"></div>
+        <div class="mock-text-line"></div>
+        <div class="mock-text-line short"></div>
+      </div>
+
+      <!-- AI Panel -->
+      <div class="mock-ai-panel">
+        <div class="mock-ai-tabs">
+          <div class="mock-tab active">Tutor</div>
+          <div class="mock-tab">Thesis</div>
+          <div class="mock-tab">Ask</div>
+          <div class="mock-tab">Terms</div>
+        </div>
+        <div class="mock-ai-body">
+          <div class="mock-ai-msg user">
+            What does "leviosa" mean in context?
+          </div>
+          <div class="mock-ai-msg ai">
+            It's the incantation for the Levitation Charm. In this chapter it signals Lily's natural aptitude — she masters the spell faster than anyone else in class.
+          </div>
+          <div class="mock-ai-msg user">
+            Simplify the next paragraph.
+          </div>
+          <div class="mock-ai-msg ai" style="opacity:.5">
+            Typing…
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── Features ────────────────────────────────────────────── -->
+<div id="features" class="features" style="margin-top: 120px;">
+
+  <!-- 01 AI Tutor -->
+  <div class="feature">
+    <div class="feat-text">
+      <div class="feat-num">01</div>
+      <h2 class="feat-title">An AI tutor inside every document.</h2>
+      <p class="feat-body">
+        Select any passage and ask Fuzzy to explain, simplify, or quiz you on it.
+        Your tutor reads the same document you do — it has full context, not just the sentence you highlighted.
+      </p>
+      <div class="feat-pills">
+        <span class="pill">Explain</span>
+        <span class="pill">Simplify</span>
+        <span class="pill">Quiz me</span>
+        <span class="pill">Summarise</span>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-visual-chrome">
+        <div class="traffic r"></div>
+        <div class="traffic y"></div>
+        <div class="traffic g"></div>
+      </div>
+      <div class="feat-visual-body">
+        <div class="tutor-selection">
+          "…by the end of his first week of lessons, Remus had lost ten house points,
+          <mark>learnt one spell, and gained another bruise; this time on his chin.</mark>"
+        </div>
+        <div class="tutor-response">
+          <div class="tutor-response-label">✦ Fuzzy</div>
+          This sentence uses a list of three to show Remus's week was a mixed bag — he's struggling socially (losing points) and physically (bruises), but genuinely learning. The bruise on his chin implies a practical magic lesson gone wrong.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 Rich Reader -->
+  <div class="feature flip">
+    <div class="feat-text">
+      <div class="feat-num">02</div>
+      <h2 class="feat-title">Beautiful reading for every format.</h2>
+      <p class="feat-body">
+        PDF, EPUB, Word, Markdown — Fuzzy imports them all into one library.
+        Books render with proper typography and reading themes. PDFs keep their layout.
+        Everything is searchable.
+      </p>
+      <div class="feat-pills">
+        <span class="pill">PDF</span>
+        <span class="pill">EPUB</span>
+        <span class="pill">DOCX</span>
+        <span class="pill">Markdown</span>
+        <span class="pill">TXT</span>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-visual-chrome">
+        <div class="traffic r"></div>
+        <div class="traffic y"></div>
+        <div class="traffic g"></div>
+      </div>
+      <div class="feat-visual-body">
+        <div class="reader-page">
+          <div style="font-size:15px; font-weight:700; margin-bottom:12px; letter-spacing:-.01em">
+            Chapter Eight
+          </div>
+          By the end of his first week of lessons, Remus had lost ten house points,
+          learnt one spell, and gained another bruise; this time on his chin. The first
+          few lessons were ok — they were introductory, and while Lily Evans spent each
+          class furiously scribbling down pages and pages of notes…
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 Library -->
+  <div class="feature">
+    <div class="feat-text">
+      <div class="feat-num">03</div>
+      <h2 class="feat-title">A library that knows your books.</h2>
+      <p class="feat-body">
+        Every import lands in a unified library with chapter-level navigation.
+        Expand any book to jump straight to a chapter — no more hunting for where you left off.
+      </p>
+      <div class="feat-pills">
+        <span class="pill">Chapter navigation</span>
+        <span class="pill">Resume position</span>
+        <span class="pill">Annotations</span>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-visual-chrome">
+        <div class="traffic r"></div>
+        <div class="traffic y"></div>
+        <div class="traffic g"></div>
+      </div>
+      <div class="feat-visual-body" style="padding: 16px;">
+        <div class="lib-item open">
+          <span style="font-size:11px">▾</span>
+          <span style="flex:1; font-size:12px">All the Young Dudes</span>
+          <span class="lib-badge">epub</span>
+        </div>
+        <div class="lib-chapters">
+          <div class="lib-ch">1 · The Beginning</div>
+          <div class="lib-ch" style="color: var(--fg-muted)">2 · First Lessons</div>
+          <div class="lib-ch">3 · Charms Class</div>
+          <div class="lib-ch">4 · The Sorting Hat</div>
+        </div>
+        <div class="lib-item">
+          <span style="font-size:11px">›</span>
+          <span style="flex:1; font-size:12px">A Brief History of Time</span>
+          <span class="lib-badge">pdf</span>
+        </div>
+        <div class="lib-item">
+          <span style="font-size:11px">›</span>
+          <span style="flex:1; font-size:12px">Thinking, Fast and Slow</span>
+          <span class="lib-badge">pdf</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 Study Packs -->
+  <div class="feature flip">
+    <div class="feat-text">
+      <div class="feat-num">04</div>
+      <h2 class="feat-title">Turn any book into a study pack.</h2>
+      <p class="feat-body">
+        Generate AI-powered flashcards and quizzes from any document in one click.
+        Spaced repetition tracks which cards you know. Review on your schedule.
+      </p>
+      <div class="feat-pills">
+        <span class="pill">Flashcards</span>
+        <span class="pill">Quizzes</span>
+        <span class="pill">Spaced repetition</span>
+        <span class="pill">Key concepts</span>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-visual-chrome">
+        <div class="traffic r"></div>
+        <div class="traffic y"></div>
+        <div class="traffic g"></div>
+      </div>
+      <div class="feat-visual-body" style="padding: 16px;">
+        <div class="flash-card">
+          <div class="q">What charm does Lily Evans master in Chapter 3?</div>
+          <div class="a">The Levitation Charm (Wingardium Leviosa) — she levitates her pinecone three feet in the air.</div>
+        </div>
+        <div class="flash-card" style="opacity: .55; transform: translateY(-4px) scale(.98);">
+          <div class="q">What is the significance of Remus losing house points?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 Focus + Pacer -->
+  <div class="feature">
+    <div class="feat-text">
+      <div class="feat-num">05</div>
+      <h2 class="feat-title">Read faster. Drift less.</h2>
+      <p class="feat-body">
+        Focus mode strips the UI down to just the page.
+        The WPM pacer sweeps word by word at your chosen speed,
+        training your eyes to stop skipping lines.
+      </p>
+      <div class="feat-pills">
+        <span class="pill">Focus mode</span>
+        <span class="pill">WPM pacer</span>
+        <span class="pill">Reading stats</span>
+        <span class="pill">Session timer</span>
+      </div>
+    </div>
+    <div class="feat-visual" style="justify-content: center; align-items: center; background: #0e0e10;">
+      <div style="text-align: center; padding: 32px;">
+        <div style="font-size: 13px; color: var(--fg-subtle); margin-bottom: 20px; letter-spacing:.04em; text-transform: uppercase; font-size: 10px;">
+          Focus Mode · 280 WPM
+        </div>
+        <div style="font-family: Georgia, serif; font-size: 22px; line-height: 1.7; color: rgba(232,232,234,.25); max-width: 340px; margin: 0 auto;">
+          by the end of his first week of
+          <span style="color: var(--fg); background: rgba(232,135,74,.15); border-radius: 3px; padding: 0 3px;">lessons,</span>
+          Remus had lost ten house points, learnt one spell…
+        </div>
+        <div style="margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 16px;">
+          <div style="font-size: 11px; color: var(--fg-subtle);">◀◀</div>
+          <div style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--fg-muted);">⏸</div>
+          <div style="font-size: 11px; color: var(--fg-subtle);">▶▶</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── CTA ─────────────────────────────────────────────────── -->
+<section class="cta">
+  <h2>Start reading smarter<br />on your Mac.</h2>
+  <p>Free to download. No account. No subscription.<br />Your library stays on your machine.</p>
+  <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
+    ↓ &nbsp;Download Fuzzy for Mac
+  </a>
+  <div class="cta-meta">
+    <span>macOS 13 Ventura or later</span>
+    <span>Free</span>
+    <span>Private by default</span>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">
+    <div class="nav-logo-icon" style="width:20px;height:20px;font-size:11px">✦</div>
+    Fuzzy
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">GitHub</a></li>
+    <li><a href="https://github.com/gangisettyrushil10/fuzzy/releases" target="_blank">Releases</a></li>
+    <li><a href="https://github.com/gangisettyrushil10/fuzzy/issues" target="_blank">Feedback</a></li>
+  </ul>
+  <span class="footer-copy">v0.1.0 © 2026 Rushil Gangisetty</span>
+</footer>
+
+</body>
+</html>
