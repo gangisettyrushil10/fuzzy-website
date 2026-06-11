@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fuzzy — AI reading workspace for Mac</title>
-  <meta name="description" content="Fuzzy is a Mac-native reading workspace with a built-in AI tutor. Understand every PDF, EPUB, and book you read." />
+  <title>Fuzzy — Make reading feel alive</title>
+  <meta name="description" content="Fuzzy is a Mac-native study workspace that brings AI tutoring, margin notes, reading plans, focus tools, and study packs to books, papers, and PDFs." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/fuzzy-icon.png" />
+  <link rel="apple-touch-icon" href="assets/fuzzy-icon.png" />
   <script>document.documentElement.classList.add('js');</script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,6 +40,7 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      position: relative;
     }
 
     body::before {
@@ -102,9 +105,7 @@
 
     .nav-logo-icon {
       width: 24px; height: 24px; border-radius: 6px;
-      background: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
+      display: block; object-fit: cover;
     }
 
     .nav-links {
@@ -416,6 +417,65 @@
     }
 
     .mock-ai-msg.typing { animation: typingBlink 1.1s ease-in-out infinite alternate; }
+
+    /* ── Scroll thread overlay ───────────────────────────── */
+    .thread-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .8s ease;
+    }
+
+    .thread-overlay.ready { opacity: 1; }
+
+    .thread-overlay svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .thread-stroke {
+      fill: none;
+      stroke: rgba(245,226,201,.5);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .thread-stroke.accent { stroke: rgba(232,135,74,.55); }
+
+    .thread-seg {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    /* the travelling yarn — dark ember orange, like the logo's ball */
+    .thread-seg.travel {
+      stroke: rgba(208,102,36,.72);
+      stroke-width: 2;
+      filter: drop-shadow(0 0 5px rgba(216,112,44,.42));
+    }
+
+    /* the drawings it traces — light warm cream, like the logo's reader */
+    .thread-seg.scene {
+      stroke: rgba(248,232,208,.88);
+      stroke-width: 2.4;
+      filter: drop-shadow(0 0 7px rgba(245,212,172,.48));
+    }
+
+    #thread-ball .thread-stroke {
+      stroke: rgba(214,108,40,.8);
+      filter: drop-shadow(0 0 6px rgba(216,112,44,.4));
+    }
+
+    @media (max-width: 900px) {
+      .thread-overlay { display: none; }
+    }
 
     /* ── Open source strip ───────────────────────────────── */
     .oss-strip {
@@ -816,10 +876,151 @@
 </head>
 <body>
 
+<!-- ── Scroll thread (unravels as you read down the page) ──── -->
+<div class="thread-overlay" id="thread-overlay" aria-hidden="true">
+  <svg viewBox="0 0 1440 7200" preserveAspectRatio="none">
+    <!-- one continuous thread, split into joined segments so the yarn is dark
+         orange while the scenes it traces come out in the light logo cream.
+         Every segment starts exactly where the previous one ends. -->
+    <path class="thread-seg travel"
+      d="M170 600
+         C 420 760, 1080 660, 1210 880
+         C 1310 1060, 1280 1300, 1160 1440
+         C 1040 1580, 480 1540, 320 1690
+         C 210 1800, 150 1990, 150 2140
+         C 60 2200, 12 2340, 14 2500" />
+
+    <!-- castle — Hogwarts silhouette, one continuous trace -->
+    <path class="thread-seg scene"
+      d="M14 2500
+         C 6 2490 4 2472 6 2454
+         C 12 2414 18 2374 26 2336
+         C 32 2308 36 2280 42 2254
+         C 46 2234 50 2216 56 2200
+         L 56 2142
+         C 58 2120 64 2100 74 2084
+         L 74 2044
+         C 80 2032 88 2028 96 2034
+         L 96 2020
+         L 104 2036
+         L 104 2022
+         C 114 2034 120 2052 122 2072
+         L 122 2072
+         L 122 2126
+         L 128 2126 L 128 2116 L 135 2116 L 135 2126 L 142 2126 L 142 2116 L 149 2116 L 149 2126
+         L 149 2126
+         C 156 2122 162 2108 168 2092
+         L 168 2050
+         C 180 2032 196 2024 210 2036
+         L 210 2018
+         L 218 2036
+         C 232 2050 238 2070 240 2092
+         L 240 2092
+         L 240 2156
+         C 242 2194 238 2232 228 2268
+         L 228 2324
+         C 214 2362 180 2392 142 2408
+         L 142 2472
+         C 126 2482 108 2486 90 2482
+         C 58 2474 32 2486 14 2500 Z" />
+
+    <path class="thread-seg travel"
+      d="M14 2500
+         C 24 2560, 80 2596, 160 2600
+         C 460 2660, 900 2740, 1090 2880
+         C 1290 3020, 1360 3220, 1320 3420
+         C 1290 3580, 1180 3680, 1200 3840
+         C 1220 3930, 1330 3960, 1392 4036" />
+
+    <!-- couple proposing — heart, standing figure with bun, kneeling suitor -->
+    <path class="thread-seg scene"
+      d="M1392 4036
+         C 1372 4054 1336 4088 1324 4128
+         c -18 -30 -58 -14 -50 18
+         c 8 30 42 44 50 60
+         c 8 -16 42 -30 50 -60
+         c 8 -32 -32 -48 -50 -18
+         C 1302 4190 1272 4232 1260 4278
+         c -26 -10 -34 24 -18 36
+         c 16 12 38 -8 28 -24
+         c 6 20 10 40 10 60
+         c -6 42 -16 82 -30 120
+         c 24 -20 50 -36 76 -44
+         c 20 -16 42 10 30 26
+         c -12 14 -36 0 -30 -26
+         c -22 18 -46 32 -70 40
+         c -10 40 -18 80 -24 120
+         c 22 14 42 32 58 54
+         l 14 58
+         c -16 -6 -32 -12 -46 -18
+         c 18 -78 40 -156 68 -230
+         c 8 -22 16 -44 18 -66
+         c -10 -6 -12 -16 -4 -20
+         c -10 -6 -6 -16 6 -18
+         l -16 -12 l 14 -12
+         c -10 -22 -4 -44 14 -58
+         c 22 -24 58 -10 54 20
+         c -4 28 -38 36 -50 14
+         c 18 16 28 36 32 58
+         c 16 68 22 136 18 204
+         C 1368 4378 1360 4386 1352 4392" />
+
+    <path class="thread-seg travel"
+      d="M1352 4392
+         C 1280 4460, 1000 4540, 700 4580
+         C 380 4640, 240 4760, 220 4940
+         C 200 5120, 230 5320, 190 5520
+         C 160 5720, 230 5870, 330 5980
+         C 490 6160, 810 6240, 1020 6400
+         C 1140 6500, 1180 6650, 1196 6786" />
+
+    <!-- the logo reader — infinity legs, profile, bun, open book -->
+    <path class="thread-seg scene"
+      d="M1196 6786
+         C 1220 6808 1258 6810 1280 6788
+         C 1302 6766 1300 6730 1276 6710
+         C 1252 6690 1216 6696 1198 6724
+         C 1180 6752 1186 6784 1196 6786
+         C 1206 6784 1212 6752 1194 6724
+         C 1176 6696 1140 6690 1116 6710
+         C 1092 6730 1090 6766 1112 6788
+         C 1134 6810 1172 6808 1196 6786
+         C 1188 6730 1206 6672 1258 6630
+         C 1310 6588 1388 6574 1464 6606
+         C 1524 6634 1562 6696 1556 6764
+         C 1550 6832 1502 6894 1434 6934
+         C 1366 6974 1282 6988 1214 6964
+         C 1170 6948 1146 6908 1158 6864
+         C 1188 6796 1262 6748 1352 6730
+         C 1442 6712 1536 6748 1588 6812
+         C 1548 6750 1470 6720 1382 6724
+         C 1294 6728 1224 6776 1204 6844
+         C 1192 6888 1216 6932 1266 6964
+         C 1326 7002 1406 7022 1482 7012
+         C 1548 7004 1600 6970 1618 6920
+         C 1582 6970 1516 7010 1432 7032
+         C 1368 7046 1300 7040 1256 7016
+         C 1290 6996 1330 6988 1370 6996
+         C 1404 7002 1430 7022 1438 7050" />
+
+    <!-- the fuzzball, riding the tip of the thread -->
+    <g id="thread-ball">
+      <path class="thread-stroke" d="M-64 -6 a64 56 0 1 0 128 0 a64 56 0 1 0 -128 0" opacity=".8" />
+      <path class="thread-stroke" d="M-56 -24 a60 48 25 1 0 116 22 a60 48 25 1 0 -116 -22" opacity=".65" />
+      <path class="thread-stroke" d="M-38 34 a52 58 -30 1 0 92 -48 a52 58 -30 1 0 -92 48" opacity=".6" />
+      <path class="thread-stroke" d="M-30 -38 a40 42 10 1 0 66 54 a40 42 10 1 0 -66 -54" opacity=".55" />
+      <path class="thread-stroke" d="M-58 8 a58 40 -12 1 0 118 -10 a58 40 -12 1 0 -118 10" opacity=".5" />
+      <path class="thread-stroke" d="M-44 -30 a48 52 40 1 0 90 56 a48 52 40 1 0 -90 -56" opacity=".45" />
+      <path class="thread-stroke" d="M-50 10 c20 -40 70 -30 80 8 c10 38 -44 60 -70 28 c-26 -32 10 -76 48 -60" opacity=".5" />
+      <path class="thread-stroke" d="M-26 -44 c40 -8 62 30 44 56 c-20 30 -66 16 -64 -18 c2 -30 36 -46 60 -28" opacity=".4" />
+    </g>
+  </svg>
+</div>
+
 <!-- ── Navigation ─────────────────────────────────────────── -->
 <nav>
   <a class="nav-logo" href="/">
-    <div class="nav-logo-icon">✦</div>
+    <img class="nav-logo-icon" src="assets/fuzzy-icon.png" alt="Fuzzy app icon" />
     Fuzzy
   </a>
   <ul class="nav-links">
@@ -840,11 +1041,11 @@
   <div class="hero-badge">
     <span>Open source</span> Free to download · macOS 13+
   </div>
-  <div class="hero-script">for curious readers</div>
-  <h1>Read deeply.<br /><em>Understand beautifully.</em></h1>
+  <div class="hero-script">a living reading workspace</div>
+  <h1>Make your reading<br /><em>feel alive.</em></h1>
   <p class="hero-sub">
-    Fuzzy is a Mac-native reading workspace with a built-in AI tutor.
-    Select a passage, ask a question, and keep your attention inside the page.
+    Fuzzy is a Mac-native reading workspace where your books, papers, and PDFs become interactive.
+    Ask questions in the margin, turn passages into notes, generate study packs, and stay inside the page.
   </p>
   <div class="hero-actions">
     <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
@@ -855,53 +1056,54 @@
     </a>
   </div>
   <p style="margin-top:14px; font-size:12.5px; color: var(--fg-subtle);">
-    macOS 13 Ventura or later &nbsp;·&nbsp; Free &nbsp;·&nbsp; No account required &nbsp;·&nbsp; Contributions welcome
+    macOS 13 Ventura or later &nbsp;·&nbsp; Free &nbsp;·&nbsp; No account required &nbsp;·&nbsp; Open source &nbsp;·&nbsp; Private by default
   </p>
   <div class="hero-kicker" aria-label="Fuzzy highlights">
-    <span>AI margin notes while you read</span>
+    <span>AI tutor in the margins</span>
     <span>Study packs from any document</span>
-    <span>Local library, open-source roadmap</span>
+    <span>Focus mode for deep reading</span>
+    <span>Your library stays on your Mac</span>
   </div>
 </section>
 
 <!-- ── App Screenshot ──────────────────────────────────────── -->
 <div class="mockup-wrap reveal">
   <div class="mockup" style="border-radius:12px; overflow:hidden;">
-    <img src="assets/reader.png" alt="Fuzzy — The Great Gatsby open in paper-theme reader with AI panel" style="display:block; width:100%;" />
+    <img src="assets/reader.png" alt="Fuzzy — The Great Gatsby open in a beautiful reader with AI margin notes and study tools" style="display:block; width:100%;" />
   </div>
 </div>
 
 <section class="use-cases reveal">
-  <div class="section-label">A helpful reading companion</div>
-  <h2 class="section-heading">Built for the rhythm of long reading.</h2>
+  <div class="section-label">Your documents have more to say</div>
+  <h2 class="section-heading">Built for the rhythm of deep reading.</h2>
   <div class="use-case-grid">
     <article class="use-case-card">
       <h3>Ask in context</h3>
-      <p>Fuzzy keeps explanations close to the sentence you selected, so you can understand without leaving the page.</p>
+      <p>Highlight any passage and ask Fuzzy to explain, simplify, summarize, define, give an example, or quiz you.</p>
     </article>
     <article class="use-case-card">
-      <h3>Review later</h3>
-      <p>Turn important passages into flashcards and quizzes when you want to remember, not just read.</p>
+      <h3>Remember what clicked</h3>
+      <p>Save explanations, insights, and important moments as margin notes attached to the exact text that made them matter.</p>
     </article>
     <article class="use-case-card">
-      <h3>Stay with the page</h3>
-      <p>Focus mode and the reading pacer help the interface fade away when you want a quieter session.</p>
+      <h3>Study from the source</h3>
+      <p>Turn books, papers, PDFs, and documents into flashcards, quizzes, summaries, and key concepts from what you actually read.</p>
     </article>
   </div>
 </section>
 
 <section class="oss-strip reveal" aria-label="Open source project links">
   <a class="oss-card" href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">
-    <strong>Star Fuzzy on GitHub</strong>
-    <span>Help more readers discover the project and follow new releases.</span>
+    <strong>Built in the open</strong>
+    <span>Star the project to follow along and help shape a better future for reading.</span>
   </a>
   <a class="oss-card" href="https://github.com/gangisettyrushil10/fuzzy/issues" target="_blank">
-    <strong>Open roadmap, real feedback</strong>
-    <span>File bugs, request features, and shape what the reader becomes next.</span>
+    <strong>Open roadmap</strong>
+    <span>See what is shipping next and tell us where the reading flow breaks.</span>
   </a>
   <a class="oss-card" href="https://github.com/gangisettyrushil10/fuzzy/pulls" target="_blank">
     <strong>Contributions welcome</strong>
-    <span>Improve formats, polish the UI, or help build better study tools.</span>
+    <span>Improve formats, search, study tools, performance, design, and AI tutoring.</span>
   </a>
 </section>
 
@@ -914,14 +1116,17 @@
       <div class="feat-num">01</div>
       <h2 class="feat-title">An AI tutor inside every document.</h2>
       <p class="feat-body">
-        Select any passage and ask Fuzzy to explain, simplify, or quiz you on it.
-        Your tutor reads the same document you do — it has full context, not just the sentence you highlighted.
+        Reading breaks when you hit a paragraph that refuses to make sense.
+        Select a passage and ask Fuzzy to explain it, simplify it, summarize it, define key terms, give an example, or quiz you.
+        No copying into ChatGPT. No losing your place. Just the page, finally talking back.
       </p>
       <div class="feat-pills">
         <span class="pill">Explain</span>
         <span class="pill">Simplify</span>
         <span class="pill">Quiz me</span>
-        <span class="pill">Summarise</span>
+        <span class="pill">Summarize</span>
+        <span class="pill">Define</span>
+        <span class="pill">Example</span>
       </div>
     </div>
     <div class="feat-visual" style="aspect-ratio:unset; background:none; border:none;">
@@ -935,9 +1140,9 @@
       <div class="feat-num">02</div>
       <h2 class="feat-title">Beautiful reading for every format.</h2>
       <p class="feat-body">
-        PDF, EPUB, Word, Markdown — Fuzzy imports them all into one library.
-        Books render with proper typography and reading themes. PDFs keep their layout.
-        Everything is searchable.
+        Fuzzy gives your reading a real home. Import PDFs, EPUBs, Word documents,
+        Markdown, and text files into one calm library. Books render with thoughtful typography and reading themes.
+        PDFs keep their original layout.
       </p>
       <div class="feat-pills">
         <span class="pill">PDF</span>
@@ -958,13 +1163,16 @@
       <div class="feat-num">03</div>
       <h2 class="feat-title">A library that knows your books.</h2>
       <p class="feat-body">
-        Every import lands in a unified library with chapter-level navigation.
-        Expand any book to jump straight to a chapter — no more hunting for where you left off.
+        Your library should know more than where the file is stored.
+        Fuzzy keeps documents, chapters, annotations, reading progress, study packs, and notes together,
+        so you can return to the exact idea you were working through.
       </p>
       <div class="feat-pills">
         <span class="pill">Chapter navigation</span>
         <span class="pill">Resume position</span>
         <span class="pill">Annotations</span>
+        <span class="pill">Saved notes</span>
+        <span class="pill">Searchable library</span>
       </div>
     </div>
     <div class="feat-visual" style="aspect-ratio:unset; background:none; border:none;">
@@ -976,10 +1184,11 @@
   <div class="feature flip reveal">
     <div class="feat-text">
       <div class="feat-num">04</div>
-      <h2 class="feat-title">Turn any book into a study pack.</h2>
+      <h2 class="feat-title">Turn any document into a study pack.</h2>
       <p class="feat-body">
-        Generate AI-powered flashcards and quizzes from any document in one click.
-        Spaced repetition tracks which cards you know. Review on your schedule.
+        Reading is only half the work. Remembering is the other half.
+        Fuzzy can turn a book, paper, or PDF into summaries, key concepts, flashcards, and quizzes
+        so review starts from the source.
       </p>
       <div class="feat-pills">
         <span class="pill">Flashcards</span>
@@ -1012,9 +1221,9 @@
       <div class="feat-num">05</div>
       <h2 class="feat-title">Read faster. Drift less.</h2>
       <p class="feat-body">
-        Focus mode strips the UI down to just the page.
-        The WPM pacer sweeps word by word at your chosen speed,
-        training your eyes to stop skipping lines.
+        Sometimes the best tool is the one that disappears.
+        Focus Mode clears the interface so the page can breathe.
+        The WPM pacer guides your eyes at your chosen speed, helping you stop skipping lines and stay inside the rhythm of reading.
       </p>
       <div class="feat-pills">
         <span class="pill">Focus mode</span>
@@ -1042,6 +1251,78 @@
     </div>
   </div>
 
+  <!-- 06 Reading Plans -->
+  <div class="feature flip reveal">
+    <div class="feat-text">
+      <div class="feat-num">06</div>
+      <h2 class="feat-title">Reading plans for the time you actually have.</h2>
+      <p class="feat-body">
+        Not every session is a deep work session. Tell Fuzzy how much time you have,
+        and it helps you decide what to deep read, what to skim, and what to review later.
+      </p>
+      <div class="feat-pills">
+        <span class="pill">Deep read</span>
+        <span class="pill">Skim</span>
+        <span class="pill">Review later</span>
+        <span class="pill">Session timer</span>
+        <span class="pill">Progress tracking</span>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-visual-chrome">
+        <div class="traffic r"></div>
+        <div class="traffic y"></div>
+        <div class="traffic g"></div>
+      </div>
+      <div class="feat-visual-body">
+        <div class="tutor-response">
+          <div class="tutor-response-label">You have 30 minutes</div>
+          Deep read the introduction and main argument. Skim supporting examples.
+          Review the conclusion and key terms before stopping.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 Living Notes -->
+  <div class="feature reveal">
+    <div class="feat-text">
+      <div class="feat-num">07</div>
+      <h2 class="feat-title">Notes that stay alive in the margin.</h2>
+      <p class="feat-body">
+        Most notes become disconnected from the moment that created them.
+        Fuzzy keeps annotations attached to the passage, page, and context they came from,
+        so your thinking stays with the text.
+      </p>
+      <div class="feat-pills">
+        <span class="pill">Margin notes</span>
+        <span class="pill">Passage anchors</span>
+        <span class="pill">AI explanations</span>
+        <span class="pill">Highlights</span>
+        <span class="pill">Review later</span>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-visual-chrome">
+        <div class="traffic r"></div>
+        <div class="traffic y"></div>
+        <div class="traffic g"></div>
+      </div>
+      <div class="feat-visual-body">
+        <div class="reader-page">
+          <p>
+            The sentence finally clicks when the explanation stays beside the line
+            that made you stop.
+          </p>
+        </div>
+        <div class="tutor-response" style="margin-top: 14px;">
+          <div class="tutor-response-label">Margin note</div>
+          Your notes do not float away. They stay with the text.
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ── Community / OSS CTA ────────────────────────────────── -->
@@ -1050,8 +1331,8 @@
     <div>
       <h2>Built in the open for people who read deeply.</h2>
       <p>
-        Fuzzy is early, free, and open source. Star the repo if you want to follow along,
-        open an issue if something feels missing, or send a pull request if you want to help.
+        Fuzzy is early, free, and open source. It is for students tired of drowning in PDFs,
+        researchers keeping up with papers, book lovers who want smarter notes, and builders who want reading tools that feel as good as coding tools.
       </p>
       <div class="community-actions">
         <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">★ Star on GitHub</a>
@@ -1060,16 +1341,16 @@
       </div>
     </div>
     <ul class="community-list">
-      <li>Good first issues for readers, students, and builders</li>
       <li>Help test PDFs, EPUBs, DOCX, Markdown, and long books</li>
-      <li>Share feature ideas for AI tutoring, notes, quizzes, and focus mode</li>
+      <li>Improve study pack generation, exports, search, and review tools</li>
+      <li>Polish the reader, focus mode, reading stats, and AI tutor flows</li>
     </ul>
   </div>
 </section>
 
 <!-- ── CTA ─────────────────────────────────────────────────── -->
 <section class="cta reveal">
-  <h2>Start reading smarter<br />on your Mac.</h2>
+  <h2>Start reading like<br />the page is alive.</h2>
   <p>Free to download. No account. No subscription.<br />Your library stays on your machine.</p>
   <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
     ↓ &nbsp;Download Fuzzy for Mac
@@ -1085,7 +1366,7 @@
 <!-- ── Footer ─────────────────────────────────────────────── -->
 <footer>
   <div class="footer-logo">
-    <div class="nav-logo-icon" style="width:20px;height:20px;font-size:11px">✦</div>
+    <img class="nav-logo-icon" src="assets/fuzzy-icon.png" alt="" style="width:20px;height:20px" />
     Fuzzy
   </div>
   <ul class="footer-links">
@@ -1113,6 +1394,91 @@
   } else {
     revealElements.forEach((element) => element.classList.add('in-view'));
   }
+
+  // Scroll-driven thread: the fuzzball unspools as you scroll down,
+  // drawing scenes along the way, and re-ravels as you scroll back up.
+  (() => {
+    const overlay = document.getElementById('thread-overlay');
+    if (!overlay) return;
+
+    const clamp01 = (value) => Math.min(1, Math.max(0, value));
+    let initialized = false;
+
+    const setup = () => {
+      if (initialized || !overlay.clientWidth) return;
+      initialized = true;
+
+      const ball = document.getElementById('thread-ball');
+      const segments = Array.from(overlay.querySelectorAll('.thread-seg')).map((path) => {
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = `${length}`;
+        path.style.strokeDashoffset = `${length}`;
+        return { path, length };
+      });
+      const totalLength = segments.reduce((sum, seg) => sum + seg.length, 0);
+
+      const apply = (progress) => {
+        const target = totalLength * progress;
+        let consumed = 0;
+        let tip = segments[0].path.getPointAtLength(0);
+        segments.forEach(({ path, length }) => {
+          const local = Math.min(Math.max(target - consumed, 0), length);
+          path.style.strokeDashoffset = `${length - local}`;
+          if (local > 0) tip = path.getPointAtLength(local);
+          consumed += length;
+        });
+        const scale = 1 - progress * 0.72;
+        ball.setAttribute('transform', `translate(${tip.x} ${tip.y}) rotate(${progress * 480}) scale(${scale})`);
+      };
+
+      const scrollProgress = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        return max > 0 ? clamp01(window.scrollY / max) : 0;
+      };
+
+      apply(scrollProgress());
+      overlay.classList.add('ready');
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.addEventListener('scroll', () => apply(scrollProgress()), { passive: true });
+        return;
+      }
+
+      let current = scrollProgress();
+      let rafId = null;
+      let lastFrameAt = 0;
+
+      const frame = () => {
+        lastFrameAt = performance.now();
+        const target = scrollProgress();
+        current += (target - current) * 0.085;
+        if (Math.abs(target - current) < 0.0004) {
+          current = target;
+          apply(current);
+          rafId = null;
+          return;
+        }
+        apply(current);
+        rafId = requestAnimationFrame(frame);
+      };
+
+      const kick = () => {
+        // If frames aren't being delivered (occluded window), track scroll directly.
+        if (rafId !== null && performance.now() - lastFrameAt > 400) {
+          current = scrollProgress();
+          apply(current);
+          return;
+        }
+        if (rafId === null) rafId = requestAnimationFrame(frame);
+      };
+
+      window.addEventListener('scroll', kick, { passive: true });
+      kick();
+    };
+
+    setup();
+    window.addEventListener('resize', setup);
+  })();
 </script>
 
 </body>
