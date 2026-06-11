@@ -6,7 +6,8 @@
   <title>Fuzzy — AI reading workspace for Mac</title>
   <meta name="description" content="Fuzzy is a Mac-native reading workspace with a built-in AI tutor. Understand every PDF, EPUB, and book you read." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js');</script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -21,8 +22,10 @@
       --fg-subtle: #46464f;
       --accent:    #e8874a;
       --accent-dim:#e8874a22;
+      --accent-glow:#e8874a44;
       --radius:    10px;
       --font:      'Inter', system-ui, sans-serif;
+      --serif:     'Cormorant Garamond', Georgia, serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -34,9 +37,53 @@
       font-size: 15px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(232,135,74,.10), transparent 24%),
+        radial-gradient(circle at 80% 8%, rgba(255,244,220,.045), transparent 24%);
+      filter: blur(10px);
     }
 
     a { color: inherit; text-decoration: none; }
+
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .js .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .js .hero.reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    @keyframes floatMockup {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes softPulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+      50% { box-shadow: 0 0 0 7px transparent; }
+    }
+
+    @keyframes typingBlink {
+      0%, 45% { opacity: .35; }
+      46%, 100% { opacity: 1; }
+    }
 
     /* ── Nav ─────────────────────────────────────────────── */
     nav {
@@ -68,6 +115,28 @@
 
     .nav-links a:hover { color: var(--fg); }
 
+    .nav-cta {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .btn-star {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--fg-muted);
+      font-size: 13px; font-weight: 500;
+      transition: border-color .15s, color .15s, background .15s, transform .15s;
+      white-space: nowrap;
+    }
+
+    .btn-star:hover {
+      color: var(--fg);
+      border-color: rgba(232,135,74,.35);
+      background: rgba(232,135,74,.08);
+      transform: translateY(-1px);
+    }
+
     .btn-dl {
       display: inline-flex; align-items: center; gap: 7px;
       padding: 7px 16px;
@@ -82,8 +151,50 @@
     /* ── Hero ────────────────────────────────────────────── */
     .hero {
       text-align: center;
-      padding: 100px 24px 80px;
-      max-width: 740px; margin: 0 auto;
+      padding: 112px 24px 70px;
+      max-width: 1180px; margin: 0 auto;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 58px 20% auto;
+      height: 240px;
+      z-index: -1;
+      border-radius: 999px;
+      background: rgba(232,135,74,.18);
+      filter: blur(90px);
+      opacity: .26;
+    }
+
+    .hero-script {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(22px, 3.5vw, 38px);
+      line-height: 1;
+      color: rgba(232,135,74,.9);
+      margin: -14px 0 16px;
+      letter-spacing: .01em;
+    }
+
+    .hero-kicker {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 820px;
+      margin: 34px auto 0;
+    }
+
+    .hero-kicker span {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--fg-muted);
+      font-size: 12px;
+      background: rgba(255,255,255,.025);
+      backdrop-filter: blur(14px);
     }
 
     .hero-badge {
@@ -98,16 +209,25 @@
     .hero-badge span { color: var(--accent); font-weight: 500; }
 
     h1 {
-      font-size: clamp(36px, 6vw, 58px);
-      font-weight: 600; letter-spacing: -.03em; line-height: 1.08;
+      font-family: var(--serif);
+      font-size: clamp(42px, 6vw, 68px);
+      font-weight: 500; letter-spacing: -.035em; line-height: 1;
       margin-bottom: 20px;
     }
 
-    h1 em { font-style: normal; color: var(--fg-muted); }
+    h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: transparent;
+      background: linear-gradient(90deg, #f1c29b, var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow: 0 0 24px rgba(232,135,74,.10);
+    }
 
     .hero-sub {
       font-size: 17px; color: var(--fg-muted); line-height: 1.6;
-      max-width: 520px; margin: 0 auto 40px;
+      max-width: 610px; margin: 0 auto 40px;
     }
 
     .hero-actions {
@@ -121,17 +241,34 @@
       background: var(--fg); color: var(--bg);
       border-radius: 10px;
       font-size: 14.5px; font-weight: 500;
-      transition: opacity .15s;
+      transition: opacity .15s, transform .15s;
     }
-    .btn-dl-hero:hover { opacity: .88; }
+    .btn-dl-hero:hover { opacity: .88; transform: translateY(-1px); }
+
+    .btn-hero-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 20px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--fg);
+      font-size: 14.5px; font-weight: 500;
+      background: rgba(255,255,255,.025);
+      transition: border-color .15s, background .15s, transform .15s;
+    }
+
+    .btn-hero-secondary:hover {
+      border-color: rgba(232,135,74,.35);
+      background: rgba(232,135,74,.08);
+      transform: translateY(-1px);
+    }
 
     .hero-note {
       font-size: 12px; color: var(--fg-subtle);
     }
 
-    /* ── App Screenshot ─────────────────────────────────── */
+    /* ── App Mockup ──────────────────────────────────────── */
     .mockup-wrap {
-      max-width: 1000px; margin: 72px auto 0;
+      max-width: 1120px; margin: 72px auto 0;
       padding: 0 24px;
     }
 
@@ -139,12 +276,243 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       overflow: hidden;
-      box-shadow: 0 40px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+      background: var(--surface);
+      box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+      position: relative;
     }
 
-    .mockup img {
-      display: block; width: 100%;
+    .mockup::after {
+      content: "";
+      position: absolute;
+      inset: auto 16px 16px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(232,135,74,.9), transparent);
+    }
+
+    /* window chrome */
+    .mockup-chrome {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 16px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .traffic { width: 12px; height: 12px; border-radius: 50%; }
+    .traffic.r { background: #ff5f57; }
+    .traffic.y { background: #febc2e; }
+    .traffic.g { background: #28c840; }
+
+    .mock-title {
+      flex: 1; text-align: center;
+      font-size: 12px; color: var(--fg-subtle);
+    }
+
+    /* three-column app layout */
+    .mockup-body {
+      display: grid;
+      grid-template-columns: 200px 1fr 260px;
+      height: 400px;
+    }
+
+    .mock-sidebar {
+      background: var(--surface-2);
+      border-right: 1px solid var(--border);
+      padding: 12px 10px;
+      overflow: hidden;
+    }
+
+    .mock-label {
+      font-size: 9px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--fg-subtle);
+      padding: 4px 6px; margin-bottom: 8px;
+    }
+
+    .mock-doc {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 8px; border-radius: 5px;
+      font-size: 11px; color: var(--fg-muted);
+      margin-bottom: 2px;
+    }
+    .mock-doc.active {
+      background: linear-gradient(90deg, rgba(232,135,74,.14), rgba(124,92,255,.13));
+      color: var(--fg);
+    }
+
+    .mock-doc-icon { font-size: 10px; }
+
+    .mock-chapter {
+      padding: 3px 8px 3px 22px;
+      font-size: 10px; color: var(--fg-subtle);
+      border-left: 1px solid var(--border);
+      margin-left: 12px;
+    }
+
+    .mock-reader {
+      padding: 28px 32px;
+      overflow: hidden;
+    }
+
+    .mock-reader-title {
+      font-size: 18px; font-weight: 600; color: var(--fg);
+      margin-bottom: 14px; letter-spacing: -.01em;
+    }
+
+    .mock-text-line {
+      height: 10px; border-radius: 3px;
+      background: var(--surface-2);
+      margin-bottom: 8px;
+    }
+
+    .mock-text-line.short { width: 65%; }
+    .mock-text-line.shorter { width: 40%; }
+
+    .mock-highlight {
+      display: inline-block;
+      background: rgba(232,135,74,.18);
+      border-radius: 2px;
+      height: 10px; width: 45%;
+      margin-bottom: 8px;
+      animation: softPulse 2.8s ease-in-out infinite;
+    }
+
+    .mock-ai-panel {
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+
+    .mock-ai-tabs {
+      display: flex; gap: 2px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mock-tab {
+      padding: 3px 8px; border-radius: 4px;
+      font-size: 10px; color: var(--fg-subtle);
+    }
+    .mock-tab.active {
+      background: var(--surface);
+      color: var(--fg);
+    }
+
+    .mock-ai-body { padding: 12px; flex: 1; }
+
+    .mock-ai-msg {
+      padding: 8px 10px; border-radius: 6px;
+      font-size: 10px; line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .mock-ai-msg.user {
+      background: var(--surface);
+      color: var(--fg-muted);
+    }
+
+    .mock-ai-msg.ai {
+      background: linear-gradient(135deg, rgba(232,135,74,.1), rgba(124,92,255,.1));
+      color: var(--fg-muted);
+      border: 1px solid rgba(232,135,74,.15);
+    }
+
+    .mock-ai-msg.typing { animation: typingBlink 1.1s ease-in-out infinite alternate; }
+
+    /* ── Open source strip ───────────────────────────────── */
+    .oss-strip {
+      max-width: 980px;
+      margin: 48px auto 0;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .oss-card {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
       border-radius: 12px;
+      padding: 18px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .oss-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(232,135,74,.28);
+      background: rgba(232,135,74,.055);
+    }
+
+    /* ── Use cases ───────────────────────────────────────── */
+    .use-cases {
+      max-width: 1180px;
+      margin: 88px auto 0;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--fg-subtle);
+      margin-bottom: 14px;
+    }
+
+    .section-heading {
+      font-family: var(--serif);
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -.025em;
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
+
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .use-case-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      background: rgba(255,255,255,.025);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .use-case-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(232,135,74,.22);
+      background: rgba(232,135,74,.04);
+    }
+
+    .use-case-card h3 {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+
+    .use-case-card p {
+      color: var(--fg-muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .oss-card strong {
+      display: block;
+      font-size: 13.5px;
+      margin-bottom: 6px;
+      color: var(--fg);
+    }
+
+    .oss-card span {
+      display: block;
+      font-size: 12.5px;
+      color: var(--fg-muted);
+      line-height: 1.55;
     }
 
     /* ── Section divider ─────────────────────────────────── */
@@ -292,6 +660,77 @@
       border-top: 1px solid var(--border);
     }
 
+    /* ── Community section ───────────────────────────────── */
+    .community {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 110px 24px;
+      border-top: 1px solid var(--border-2);
+    }
+
+    .community-panel {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 34px;
+      background:
+        linear-gradient(135deg, rgba(232,135,74,.12), transparent 38%),
+        rgba(255,255,255,.025);
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 40px;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .community-panel::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      right: -70px;
+      top: -70px;
+      background: rgba(232,135,74,.12);
+      filter: blur(12px);
+    }
+
+    .community h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.1;
+      letter-spacing: -.025em;
+      margin-bottom: 14px;
+    }
+
+    .community p {
+      color: var(--fg-muted);
+      max-width: 560px;
+      margin-bottom: 24px;
+    }
+
+    .community-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .community-list {
+      position: relative;
+      z-index: 1;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: var(--fg-muted);
+      font-size: 13px;
+    }
+
+    .community-list li {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 13px;
+      background: rgba(11,11,12,.5);
+    }
+
     /* ── CTA section ─────────────────────────────────────── */
     .cta {
       text-align: center;
@@ -315,6 +754,7 @@
       font-size: 12.5px; color: var(--fg-subtle);
       display: flex; align-items: center; justify-content: center;
       gap: 16px;
+      flex-wrap: wrap;
     }
 
     .cta-meta span::before { content: "·"; margin-right: 16px; }
@@ -348,12 +788,29 @@
     @media (max-width: 760px) {
       nav { padding: 0 18px; }
       .nav-links { display: none; }
+      .nav-cta .btn-star { display: none; }
       .feature { grid-template-columns: 1fr; gap: 40px; padding: 64px 0; }
       .feature.flip { direction: ltr; }
       .mockup-body { grid-template-columns: 1fr; height: auto; }
       .mock-sidebar { display: none; }
       .mock-ai-panel { display: none; }
+      .oss-strip { grid-template-columns: 1fr; }
+      .hero { padding-top: 84px; }
+      .hero-kicker { grid-template-columns: 1fr; }
+      .use-case-grid { grid-template-columns: 1fr; }
+      .community { padding: 72px 24px; }
+      .community-panel { grid-template-columns: 1fr; padding: 26px; }
       footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+      .js .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -367,113 +824,92 @@
   </a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
+    <li><a href="#community">Contribute</a></li>
     <li><a href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">GitHub</a></li>
   </ul>
-  <a class="btn-dl" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
-    ↓ Download for Mac
-  </a>
+  <div class="nav-cta">
+    <a class="btn-star" href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">★ Star on GitHub</a>
+    <a class="btn-dl" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
+      ↓ Download for Mac
+    </a>
+  </div>
 </nav>
 
 <!-- ── Hero ───────────────────────────────────────────────── -->
-<section class="hero">
+<section class="hero reveal">
   <div class="hero-badge">
-    <span>New</span> Free to download · macOS 13+
+    <span>Open source</span> Free to download · macOS 13+
   </div>
-  <h1>Read smarter.<br /><em>Understand everything.</em></h1>
+  <div class="hero-script">for curious readers</div>
+  <h1>Read deeply.<br /><em>Understand beautifully.</em></h1>
   <p class="hero-sub">
     Fuzzy is a Mac-native reading workspace with a built-in AI tutor.
-    Select any text, ask any question, and actually understand what you're reading.
+    Select a passage, ask a question, and keep your attention inside the page.
   </p>
   <div class="hero-actions">
     <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
       ↓ &nbsp;Download Fuzzy for Mac
     </a>
+    <a class="btn-hero-secondary" href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">
+      ★ Star the project
+    </a>
   </div>
   <p style="margin-top:14px; font-size:12.5px; color: var(--fg-subtle);">
-    macOS 13 Ventura or later &nbsp;·&nbsp; Free &nbsp;·&nbsp; No account required
+    macOS 13 Ventura or later &nbsp;·&nbsp; Free &nbsp;·&nbsp; No account required &nbsp;·&nbsp; Contributions welcome
   </p>
+  <div class="hero-kicker" aria-label="Fuzzy highlights">
+    <span>AI margin notes while you read</span>
+    <span>Study packs from any document</span>
+    <span>Local library, open-source roadmap</span>
+  </div>
 </section>
 
 <!-- ── App Screenshot ──────────────────────────────────────── -->
-<div class="mockup-wrap">
-  <div class="mockup">
-    <img src="assets/reader.png" alt="Fuzzy reading The Great Gatsby — paper theme reader with AI panel" />
+<div class="mockup-wrap reveal">
+  <div class="mockup" style="border-radius:12px; overflow:hidden;">
+    <img src="assets/reader.png" alt="Fuzzy — The Great Gatsby open in paper-theme reader with AI panel" style="display:block; width:100%;" />
   </div>
 </div>
-<div style="display:none"><div class="mockup-body">
 
-      <!-- Sidebar -->
-      <div class="mock-sidebar">
-        <div class="mock-label">Library</div>
-        <div class="mock-doc active">
-          <span class="mock-doc-icon">▾</span>
-          Crime and Punishment
-        </div>
-        <div class="mock-chapter">Pt. I · The Plan</div>
-        <div class="mock-chapter">Pt. II · The Crime</div>
-        <div class="mock-chapter">Pt. III · The Pursuit</div>
-        <div class="mock-doc" style="margin-top:6px">
-          <span class="mock-doc-icon">›</span>
-          Meditations — Marcus Aurelius.epub
-        </div>
-        <div style="margin-top: 20px;">
-          <div class="mock-label">Notes</div>
-          <div style="font-size:10px; color: var(--fg-subtle); padding: 0 6px;">2 saved notes</div>
-        </div>
-      </div>
-
-      <!-- Reader -->
-      <div class="mock-reader">
-        <div class="mock-reader-title">Part I · The Plan</div>
-        <div class="mock-text-line"></div>
-        <div class="mock-text-line"></div>
-        <div class="mock-text-line short"></div>
-        <div style="height:12px"></div>
-        <div class="mock-highlight"></div>
-        <div class="mock-text-line"></div>
-        <div class="mock-text-line short"></div>
-        <div style="height:12px"></div>
-        <div class="mock-text-line"></div>
-        <div class="mock-text-line"></div>
-        <div class="mock-text-line shorter"></div>
-        <div style="height:12px"></div>
-        <div class="mock-text-line"></div>
-        <div class="mock-text-line short"></div>
-      </div>
-
-      <!-- AI Panel -->
-      <div class="mock-ai-panel">
-        <div class="mock-ai-tabs">
-          <div class="mock-tab active">Tutor</div>
-          <div class="mock-tab">Thesis</div>
-          <div class="mock-tab">Ask</div>
-          <div class="mock-tab">Terms</div>
-        </div>
-        <div class="mock-ai-body">
-          <div class="mock-ai-msg user">
-            Why does Raskolnikov split the murder into two acts?
-          </div>
-          <div class="mock-ai-msg ai">
-            He loses nerve mid-way. Dostoevsky uses this to show that Raskolnikov's "extraordinary man" theory collapses under the weight of actual violence — the gap between his idea and reality is the novel's central tension.
-          </div>
-          <div class="mock-ai-msg user">
-            Simplify his theory of the ordinary vs. extraordinary man.
-          </div>
-          <div class="mock-ai-msg ai" style="opacity:.5">
-            Typing…
-          </div>
-        </div>
-      </div>
-
-    </div>
+<section class="use-cases reveal">
+  <div class="section-label">A helpful reading companion</div>
+  <h2 class="section-heading">Built for the rhythm of long reading.</h2>
+  <div class="use-case-grid">
+    <article class="use-case-card">
+      <h3>Ask in context</h3>
+      <p>Fuzzy keeps explanations close to the sentence you selected, so you can understand without leaving the page.</p>
+    </article>
+    <article class="use-case-card">
+      <h3>Review later</h3>
+      <p>Turn important passages into flashcards and quizzes when you want to remember, not just read.</p>
+    </article>
+    <article class="use-case-card">
+      <h3>Stay with the page</h3>
+      <p>Focus mode and the reading pacer help the interface fade away when you want a quieter session.</p>
+    </article>
   </div>
-</div></div>
+</section>
+
+<section class="oss-strip reveal" aria-label="Open source project links">
+  <a class="oss-card" href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">
+    <strong>Star Fuzzy on GitHub</strong>
+    <span>Help more readers discover the project and follow new releases.</span>
+  </a>
+  <a class="oss-card" href="https://github.com/gangisettyrushil10/fuzzy/issues" target="_blank">
+    <strong>Open roadmap, real feedback</strong>
+    <span>File bugs, request features, and shape what the reader becomes next.</span>
+  </a>
+  <a class="oss-card" href="https://github.com/gangisettyrushil10/fuzzy/pulls" target="_blank">
+    <strong>Contributions welcome</strong>
+    <span>Improve formats, polish the UI, or help build better study tools.</span>
+  </a>
+</section>
 
 <!-- ── Features ────────────────────────────────────────────── -->
 <div id="features" class="features" style="margin-top: 120px;">
 
   <!-- 01 AI Tutor -->
-  <div class="feature">
+  <div class="feature reveal">
     <div class="feat-text">
       <div class="feat-num">01</div>
       <h2 class="feat-title">An AI tutor inside every document.</h2>
@@ -488,13 +924,13 @@
         <span class="pill">Summarise</span>
       </div>
     </div>
-    <div class="feat-visual" style="aspect-ratio: unset; background: none; border: none;">
-      <img src="assets/tutor.png" alt="Fuzzy AI Ask panel open alongside The Great Gatsby" style="width:100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 20px 48px rgba(0,0,0,.4);" />
+    <div class="feat-visual" style="aspect-ratio:unset; background:none; border:none;">
+      <img src="assets/tutor.png" alt="Fuzzy Ask panel open with The Great Gatsby" style="width:100%; border-radius:10px; border:1px solid var(--border); box-shadow:0 20px 48px rgba(0,0,0,.4);" />
     </div>
   </div>
 
   <!-- 02 Rich Reader -->
-  <div class="feature flip">
+  <div class="feature flip reveal">
     <div class="feat-text">
       <div class="feat-num">02</div>
       <h2 class="feat-title">Beautiful reading for every format.</h2>
@@ -511,13 +947,13 @@
         <span class="pill">TXT</span>
       </div>
     </div>
-    <div class="feat-visual" style="aspect-ratio: unset; background: none; border: none;">
-      <img src="assets/typography.png" alt="Fuzzy typography controls — font, page theme, line height, column width" style="width:100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 20px 48px rgba(0,0,0,.4);" />
+    <div class="feat-visual" style="aspect-ratio:unset; background:none; border:none;">
+      <img src="assets/typography.png" alt="Fuzzy typography controls — font, page theme, line height, column width" style="width:100%; border-radius:10px; border:1px solid var(--border); box-shadow:0 20px 48px rgba(0,0,0,.4);" />
     </div>
   </div>
 
   <!-- 03 Library -->
-  <div class="feature">
+  <div class="feature reveal">
     <div class="feat-text">
       <div class="feat-num">03</div>
       <h2 class="feat-title">A library that knows your books.</h2>
@@ -531,13 +967,13 @@
         <span class="pill">Annotations</span>
       </div>
     </div>
-    <div class="feat-visual" style="aspect-ratio: unset; background: none; border: none;">
-      <img src="assets/library.png" alt="Fuzzy library sidebar with The Great Gatsby open" style="width:100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 20px 48px rgba(0,0,0,.4);" />
+    <div class="feat-visual" style="aspect-ratio:unset; background:none; border:none;">
+      <img src="assets/library.png" alt="Fuzzy library showing The Great Gatsby with chapter navigation" style="width:100%; border-radius:10px; border:1px solid var(--border); box-shadow:0 20px 48px rgba(0,0,0,.4);" />
     </div>
   </div>
 
   <!-- 04 Study Packs -->
-  <div class="feature flip">
+  <div class="feature flip reveal">
     <div class="feat-text">
       <div class="feat-num">04</div>
       <h2 class="feat-title">Turn any book into a study pack.</h2>
@@ -571,7 +1007,7 @@
   </div>
 
   <!-- 05 Focus + Pacer -->
-  <div class="feature">
+  <div class="feature reveal">
     <div class="feat-text">
       <div class="feat-num">05</div>
       <h2 class="feat-title">Read faster. Drift less.</h2>
@@ -608,8 +1044,31 @@
 
 </div>
 
+<!-- ── Community / OSS CTA ────────────────────────────────── -->
+<section id="community" class="community reveal">
+  <div class="community-panel">
+    <div>
+      <h2>Built in the open for people who read deeply.</h2>
+      <p>
+        Fuzzy is early, free, and open source. Star the repo if you want to follow along,
+        open an issue if something feels missing, or send a pull request if you want to help.
+      </p>
+      <div class="community-actions">
+        <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy" target="_blank">★ Star on GitHub</a>
+        <a class="btn-hero-secondary" href="https://github.com/gangisettyrushil10/fuzzy/issues" target="_blank">Suggest a feature</a>
+        <a class="btn-hero-secondary" href="https://github.com/gangisettyrushil10/fuzzy/pulls" target="_blank">Contribute code</a>
+      </div>
+    </div>
+    <ul class="community-list">
+      <li>Good first issues for readers, students, and builders</li>
+      <li>Help test PDFs, EPUBs, DOCX, Markdown, and long books</li>
+      <li>Share feature ideas for AI tutoring, notes, quizzes, and focus mode</li>
+    </ul>
+  </div>
+</section>
+
 <!-- ── CTA ─────────────────────────────────────────────────── -->
-<section class="cta">
+<section class="cta reveal">
   <h2>Start reading smarter<br />on your Mac.</h2>
   <p>Free to download. No account. No subscription.<br />Your library stays on your machine.</p>
   <a class="btn-dl-hero" href="https://github.com/gangisettyrushil10/fuzzy/releases/latest" target="_blank">
@@ -618,6 +1077,7 @@
   <div class="cta-meta">
     <span>macOS 13 Ventura or later</span>
     <span>Free</span>
+    <span>Open source</span>
     <span>Private by default</span>
   </div>
 </section>
@@ -635,6 +1095,25 @@
   </ul>
   <span class="footer-copy">v0.1.0 © 2026 Rushil Gangisetty</span>
 </footer>
+
+<script>
+  const revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+
+    revealElements.forEach((element) => observer.observe(element));
+  } else {
+    revealElements.forEach((element) => element.classList.add('in-view'));
+  }
+</script>
 
 </body>
 </html>
