@@ -454,6 +454,7 @@
       stroke-linecap: round;
       stroke-linejoin: round;
       vector-effect: non-scaling-stroke;
+      will-change: stroke-dashoffset;
     }
 
     /* the travelling yarn — dark ember orange, like the logo's ball */
@@ -493,6 +494,10 @@
       stroke: rgba(232,135,74,.72);
       stroke-width: 2.2;
       filter: drop-shadow(0 0 5px rgba(216,112,44,.5));
+    }
+
+    #thread-ball {
+      will-change: transform;
     }
 
     #thread-ball .ball-glow {
@@ -930,323 +935,242 @@
   <svg viewBox="0 0 1440 7200" preserveAspectRatio="none">
     <defs>
       <path id="thread-path-castle"
-        d="M 14.0 2500.0
-           L 9.2 2492.0
-           L 31.3 2488.9
-           L 39.9 2485.9
-           L 48.5 2479.7
-           L 51.6 2473.6
-           L 51.6 2468.7
-           L 48.5 2462.5
-           L 28.9 2446.6
-           L 18.4 2435.5
-           L 16.0 2429.4
-           L 16.0 2422.0
-           L 19.1 2415.8
-           L 24.0 2410.9
-           L 37.5 2406.0
-           L 87.8 2406.0
-           L 95.2 2402.9
-           L 98.3 2398.6
-           L 109.3 2397.4
-           L 117.9 2394.3
-           L 122.9 2390.7
-           L 128.4 2383.3
-           L 129.0 2372.2
-           L 126.5 2367.3
-           L 120.4 2361.2
-           L 106.9 2354.4
-           L 81.1 2348.3
-           L 71.3 2343.4
-           L 64.5 2336.6
-           L 62.7 2331.7
-           L 62.7 2325.6
-           L 65.1 2320.6
-           L 67.6 2318.2
-           L 73.7 2316.3
-           L 82.3 2319.4
-           L 90.9 2328.6
-           L 94.6 2329.9
-           L 97.7 2324.9
-           L 98.9 2316.3
-           L 97.7 2309.0
-           L 93.4 2300.4
-           L 74.9 2282.6
-           L 69.4 2270.3
-           L 67.6 2259.2
-           L 67.6 2191.7
-           L 66.3 2185.5
-           L 60.8 2175.7
-           L 60.2 2161.0
-           L 62.7 2159.1
-           L 65.7 2164.0
-           L 69.4 2164.0
-           L 71.3 2154.2
-           L 77.4 2154.2
-           L 78.0 2161.6
-           L 81.1 2164.0
-           L 84.8 2163.4
-           L 85.4 2156.0
-           L 87.2 2154.2
-           L 92.1 2154.8
-           L 92.8 2163.4
-           L 94.0 2164.0
-           L 98.9 2163.4
-           L 100.1 2159.7
-           L 105.0 2159.1
-           L 106.3 2160.3
-           L 107.5 2175.1
-           L 102.0 2186.1
-           L 100.7 2192.3
-           L 100.7 2223.0
-           L 101.4 2227.9
-           L 103.8 2231.6
-           L 112.4 2232.2
-           L 113.6 2217.5
-           L 110.6 2200.3
-           L 114.9 2189.2
-           L 127.1 2178.8
-           L 131.4 2170.2
-           L 134.5 2154.2
-           L 136.4 2126.0
-           L 137.0 2065.8
-           L 134.5 2054.7
-           L 129.0 2046.1
-           L 128.4 2028.9
-           L 131.4 2024.6
-           L 131.4 2016.0
-           L 126.5 2014.8
-           L 122.9 2011.7
-           L 137.0 1982.2
-           L 143.7 1961.4
-           L 149.3 1938.0
-           L 154.2 1907.3
-           L 156.6 1903.6
-           L 157.2 1884.0
-           L 165.2 1880.3
-           L 172.6 1879.7
-           L 188.6 1888.9
-           L 198.4 1887.7
-           L 205.1 1882.1
-           L 203.3 1876.6
-           L 205.8 1870.5
-           L 210.7 1868.6" />
+        d="M 13.3 2498.0
+           L 12.5 2496.0
+           L 11.8 2494.0
+           L 11.1 2492.0
+           L 10.3 2490.0
+           L 9.6 2488.0
+           L 9.6 2488.0
+           L 48.3 2480.6
+           L 64.9 2470.5
+           L 70.4 2461.3
+           L 69.5 2450.2
+           L 64.9 2442.9
+           L 35.4 2418.9
+           L 22.5 2406.0
+           L 17.9 2396.8
+           L 17.9 2380.2
+           L 28.0 2367.3
+           L 37.2 2361.8
+           L 53.8 2358.1
+           L 125.7 2359.0
+           L 134.9 2355.3
+           L 140.4 2348.0
+           L 157.0 2346.1
+           L 171.7 2340.6
+           L 185.6 2324.9
+           L 186.5 2308.4
+           L 173.6 2291.8
+           L 153.3 2281.6
+           L 114.6 2272.4
+           L 96.2 2262.3
+           L 87.0 2249.4
+           L 87.0 2238.3
+           L 90.7 2231.0
+           L 101.7 2224.5
+           L 116.5 2229.1
+           L 128.4 2242.9
+           L 135.8 2243.9
+           L 141.3 2221.8
+           L 134.9 2203.3
+           L 110.0 2179.4
+           L 98.0 2159.1
+           L 94.4 2135.2
+           L 94.4 2037.5
+           L 84.2 2013.6
+           L 83.3 1991.4
+           L 87.9 1988.7
+           L 91.6 1996.0
+           L 97.1 1996.0
+           L 99.9 1981.3
+           L 109.1 1981.3
+           L 110.0 1992.4
+           L 114.6 1996.0
+           L 120.2 1995.1
+           L 123.8 1981.3
+           L 131.2 1982.2
+           L 134.0 1996.0
+           L 141.3 1995.1
+           L 143.2 1989.6
+           L 152.4 1990.5
+           L 153.3 2016.3
+           L 144.1 2038.4
+           L 144.1 2086.3
+           L 148.7 2097.4
+           L 159.8 2099.2
+           L 163.5 2091.9
+           L 159.8 2062.4
+           L 160.7 2042.1
+           L 166.2 2032.9
+           L 184.6 2017.2
+           L 190.2 2006.2
+           L 197.5 1939.9
+           L 198.5 1847.7
+           L 195.7 1834.8
+           L 186.5 1818.2
+           L 185.6 1792.4
+           L 190.2 1787.8
+           L 190.2 1774.9
+           L 177.3 1766.7
+           L 194.8 1731.6
+           L 207.7 1694.8
+           L 222.4 1621.1
+           L 227.9 1611.9
+           L 228.9 1575.0
+           L 251.0 1569.5
+           L 273.1 1582.4
+           L 287.8 1582.4
+           L 300.7 1574.1
+           L 298.9 1560.3
+           L 309.9 1552.0" />
       <path id="thread-path-proposal"
-        d="M 1392.0 4036.0
-           L 1431.3 3669.5
-           L 1425.4 3681.2
-           L 1417.3 3691.5
-           L 1407.7 3700.3
-           L 1378.3 3720.9
-           L 1366.6 3732.7
-           L 1358.5 3745.9
-           L 1358.5 3765.0
-           L 1370.3 3785.6
-           L 1372.5 3794.4
-           L 1370.3 3804.7
-           L 1365.8 3812.1
-           L 1358.5 3817.9
-           L 1348.2 3822.4
-           L 1298.2 3831.2
-           L 1286.5 3837.8
-           L 1279.8 3846.6
-           L 1279.1 3852.5
-           L 1282.1 3861.3
-           L 1287.9 3866.5
-           L 1301.2 3873.8
-           L 1305.6 3878.2
-           L 1307.0 3882.6
-           L 1305.6 3892.9
-           L 1302.6 3895.9
-           L 1293.8 3899.5
-           L 1293.1 3908.4
-           L 1290.1 3912.8
-           L 1285.7 3915.0
-           L 1283.5 3926.7
-           L 1276.2 3930.4
-           L 1279.1 3939.2
-           L 1293.8 3958.3
-           L 1298.2 3965.7
-           L 1299.7 3971.6
-           L 1300.4 3980.4
-           L 1298.2 3993.6
-           L 1287.9 4014.2
-           L 1282.8 4037.7
-           L 1290.9 4045.8
-           L 1295.3 4053.2
-           L 1295.3 4059.0
-           L 1298.2 4066.4
-           L 1299.0 4073.7
-           L 1298.2 4101.7
-           L 1287.9 4137.0
-           L 1262.2 4194.3
-           L 1258.5 4200.2
-           L 1253.4 4204.6
-           L 1246.0 4228.1
-           L 1237.2 4248.7
-           L 1232.8 4251.6
-           L 1221.8 4267.1
-           L 1213.7 4275.1
-           L 1204.9 4281.0
-           L 1199.0 4284.0
-           L 1190.2 4284.7
-           L 1182.8 4280.3
-           L 1180.6 4272.9
-           L 1183.6 4270.7
-           L 1183.6 4261.9
-           L 1185.8 4253.1
-           L 1207.1 4211.9
-           L 1207.8 4200.2
-           L 1206.3 4195.8
-           L 1200.5 4189.9
-           L 1187.2 4184.0
-           L 1168.1 4179.6
-           L 1144.6 4178.1
-           L 1141.7 4175.9
-           L 1144.6 4150.9
-           L 1147.5 4150.2
-           L 1154.9 4154.6
-           L 1159.3 4155.3
-           L 1166.6 4154.6
-           L 1171.1 4152.4
-           L 1199.7 4127.4
-           L 1199.0 4115.6
-           L 1191.6 4109.0
-           L 1187.2 4108.3
-           L 1169.6 4123.7
-           L 1162.2 4127.4
-           L 1159.3 4126.7
-           L 1152.7 4116.4
-           L 1147.5 4092.9
-           L 1139.5 4078.2
-           L 1142.4 4073.0
-           L 1142.4 4070.1
-           L 1138.7 4062.7
-           L 1119.6 4056.8
-           L 1115.2 4056.8
-           L 1110.1 4068.6
-           L 1101.2 4078.2
-           L 1093.9 4098.7
-           L 1093.9 4116.4
-           L 1098.3 4144.3
-           L 1098.3 4161.9
-           L 1096.1 4172.2
-           L 1089.5 4188.4
-           L 1088.0 4201.6
-           L 1090.2 4210.5
-           L 1099.8 4225.2
-           L 1106.4 4244.3
-           L 1110.1 4264.9
-           L 1110.1 4267.8
-           L 1107.8 4270.7
+        d="M 1379.6 4034.9
+           L 1367.3 4033.7
+           L 1354.9 4032.6
+           L 1342.5 4031.4
+           L 1330.2 4030.3
+           L 1317.8 4029.1
+           L 1305.4 4028.0
+           L 1305.4 4028.0
+           L 1304.6 4028.9
+           L 1304.6 4043.1
+           L 1303.7 4044.0
+           L 1303.7 4048.5
+           L 1302.8 4049.4
+           L 1301.9 4061.9
+           L 1299.2 4069.9
+           L 1297.4 4081.5
+           L 1294.7 4088.6
+           L 1290.3 4109.2
+           L 1289.4 4110.1
+           L 1288.5 4118.1
+           L 1287.6 4119.0
+           L 1287.6 4124.3
+           L 1285.8 4128.8
+           L 1285.8 4134.2
+           L 1284.9 4135.0
+           L 1284.9 4158.2
+           L 1285.8 4159.1
+           L 1285.8 4163.6
+           L 1286.7 4164.5
+           L 1290.3 4181.4
+           L 1298.3 4198.4
+           L 1303.7 4206.4
+           L 1309.9 4214.5
+           L 1339.4 4243.0
+           L 1348.3 4253.7
+           L 1351.8 4260.0
+           L 1356.3 4264.4
+           L 1356.3 4267.1
+           L 1343.8 4281.4
+           L 1335.8 4288.5
+           L 1326.9 4294.8
+           L 1319.7 4296.6
+           L 1317.0 4301.0
+           L 1316.2 4301.9
+           L 1313.5 4301.9
+           L 1309.9 4306.4
+           L 1315.9 4318.6
+           L 1321.9 4330.8
+           L 1327.9 4343.1
+           L 1334.0 4355.3
+           L 1340.0 4367.5
+           L 1346.0 4379.8
            L 1352.0 4392.0" />
       <path id="thread-path-reader"
-        d="M 1196.0 6786.0
-           L 1150.7 6838.4
-           L 1148.0 6839.1
-           L 1144.0 6846.4
-           L 1144.0 6851.7
-           L 1142.0 6854.4
-           L 1138.0 6855.7
-           L 1135.4 6855.1
-           L 1130.7 6850.4
-           L 1126.7 6849.7
-           L 1124.1 6851.7
-           L 1097.4 6859.0
-           L 1078.8 6865.7
-           L 1066.8 6872.4
-           L 1054.9 6882.3
-           L 1048.2 6891.7
-           L 1044.2 6899.6
-           L 1043.5 6903.6
-           L 1042.2 6904.3
-           L 1032.9 6904.3
-           L 1031.6 6905.6
-           L 1020.3 6897.0
-           L 1017.6 6899.0
-           L 1012.3 6900.3
-           L 1007.6 6905.0
-           L 1003.6 6905.0
-           L 1001.6 6909.0
-           L 999.0 6910.3
-           L 979.0 6909.6
-           L 964.4 6912.9
-           L 952.4 6912.3
-           L 948.4 6917.6
-           L 939.1 6920.9
-           L 931.1 6925.6
-           L 926.4 6922.9
-           L 918.5 6924.3
-           L 915.8 6922.3
-           L 901.2 6931.6
-           L 890.5 6934.9
-           L 882.5 6934.2
-           L 869.2 6930.9
-           L 858.6 6925.6
-           L 846.6 6914.9
-           L 841.9 6908.3
-           L 836.6 6895.0
-           L 835.3 6888.3
-           L 835.3 6872.4
-           L 839.3 6855.1
-           L 853.9 6820.5
-           L 857.9 6803.2
-           L 858.6 6785.9
-           L 859.9 6783.2
-           L 861.2 6767.2
-           L 864.6 6755.2
-           L 869.9 6743.3
-           L 875.2 6735.3
-           L 883.9 6726.0
-           L 893.2 6718.7
-           L 903.8 6712.7
-           L 910.5 6702.0
-           L 918.5 6698.0
-           L 930.4 6698.7
-           L 935.1 6702.0
-           L 939.1 6702.0
-           L 948.4 6700.7
-           L 959.0 6695.4
-           L 970.4 6685.4
-           L 974.3 6676.1
-           L 973.7 6673.4
-           L 975.0 6668.1
-           L 967.7 6656.1
-           L 966.4 6649.5
-           L 966.4 6642.8
-           L 969.7 6628.2
-           L 967.7 6625.5
-           L 969.0 6614.9
-           L 967.0 6612.9
-           L 963.0 6615.5
-           L 948.4 6614.9
-           L 940.4 6610.9
-           L 935.1 6606.2
-           L 929.8 6596.9
-           L 928.4 6591.6
-           L 927.8 6571.6
-           L 924.4 6562.3
-           L 918.5 6553.0
-           L 910.5 6545.7
-           L 897.2 6538.3
-           L 865.2 6527.7
-           L 850.6 6521.0
-           L 841.3 6514.4
-           L 830.0 6501.1
-           L 826.0 6490.4
-           L 825.3 6485.1
-           L 826.0 6477.1
-           L 828.0 6471.8
-           L 820.0 6467.8
-           L 813.3 6461.2
-           L 808.0 6449.2
-           L 808.0 6438.5
-           L 809.3 6431.9
-           L 819.3 6407.9
-           L 821.3 6399.9
-           L 820.0 6386.6
-           L 814.7 6376.0
-           L 808.0 6368.0" />
+        d="M 1187.9 6795.5
+           L 1179.8 6805.0
+           L 1171.7 6814.5
+           L 1163.6 6824.0
+           L 1155.5 6833.5
+           L 1147.4 6843.0
+           L 1139.3 6852.5
+           L 1131.2 6862.0
+           L 1131.2 6862.0
+           L 1125.4 6863.9
+           L 1120.6 6872.6
+           L 1120.6 6882.3
+           L 1116.8 6886.1
+           L 1107.1 6886.1
+           L 1102.3 6880.3
+           L 1096.5 6878.4
+           L 1038.6 6896.7
+           L 1009.7 6910.3
+           L 988.4 6929.5
+           L 973.0 6957.5
+           L 959.5 6957.5
+           L 957.6 6959.5
+           L 941.2 6947.9
+           L 929.6 6952.7
+           L 922.8 6958.5
+           L 917.1 6958.5
+           L 914.2 6964.3
+           L 910.3 6966.2
+           L 881.4 6965.2
+           L 860.1 6970.1
+           L 842.8 6969.1
+           L 838.9 6974.9
+           L 811.9 6988.4
+           L 806.1 6984.5
+           L 794.5 6986.5
+           L 790.7 6983.6
+           L 775.2 6993.2
+           L 755.9 7000.9
+           L 736.6 7000.0
+           L 713.5 6992.3
+           L 703.8 6986.5
+           L 688.4 6972.0
+           L 676.8 6950.8
+           L 673.0 6933.4
+           L 673.0 6912.2
+           L 677.8 6889.0
+           L 700.9 6833.1
+           L 705.8 6809.9
+           L 710.6 6757.8
+           L 716.4 6738.5
+           L 726.0 6719.2
+           L 744.4 6698.0
+           L 771.4 6680.6
+           L 783.9 6663.3
+           L 793.6 6658.4
+           L 803.2 6658.4
+           L 810.9 6659.4
+           L 817.7 6664.2
+           L 823.5 6664.2
+           L 837.0 6662.3
+           L 852.4 6654.6
+           L 869.8 6639.1
+           L 874.6 6625.6
+           L 874.6 6616.0
+           L 865.9 6600.6
+           L 863.0 6587.0
+           L 867.8 6556.2
+           L 865.0 6552.3
+           L 866.9 6536.9
+           L 861.1 6534.9
+           L 857.2 6538.8
+           L 841.8 6538.8
+           L 828.3 6534.0
+           L 818.6 6526.3
+           L 809.0 6508.9
+           L 806.1 6472.2
+           L 794.5 6449.1
+           L 775.2 6432.7
+           L 713.5 6410.5
+           L 692.3 6399.9
+           L 682.6 6393.1
+           L 668.1 6377.7
+           L 661.4 6364.2
+           L 658.5 6350.7
+           L 661.4 6329.4
+           L 653.7 6326.5
+           L 642.1 6315.9
+           L 633.4 6296.6
+           L 636.3 6269.6
+           L 652.7 6227.2
+           L 649.8 6204.0
+           L 634.4 6180.9" />
     </defs>
 
     <!-- orange travel yarn between scenes -->
@@ -1258,9 +1182,9 @@
          C 210 1800, 150 1990, 150 2140
          C 60 2200, 12 2340, 14 2500" />
 
-    <g transform="translate(14 2500) scale(1.5) translate(-14 -2500)">
-      <use href="#thread-path-castle" class="thread-seg scene scene-line" data-scene="castle" />
-      <use href="#thread-path-castle" class="scene-halo" data-halo-for="castle" />
+    <g data-scene-group="castle">
+      <path class="thread-seg scene scene-line" data-scene="castle" d="M 13.3 2498.0 L 12.5 2496.0 L 11.8 2494.0 L 11.1 2492.0 L 10.3 2490.0 L 9.6 2488.0 L 9.6 2488.0 L 48.3 2480.6 L 64.9 2470.5 L 70.4 2461.3 L 69.5 2450.2 L 64.9 2442.9 L 35.4 2418.9 L 22.5 2406.0 L 17.9 2396.8 L 17.9 2380.2 L 28.0 2367.3 L 37.2 2361.8 L 53.8 2358.1 L 125.7 2359.0 L 134.9 2355.3 L 140.4 2348.0 L 157.0 2346.1 L 171.7 2340.6 L 185.6 2324.9 L 186.5 2308.4 L 173.6 2291.8 L 153.3 2281.6 L 114.6 2272.4 L 96.2 2262.3 L 87.0 2249.4 L 87.0 2238.3 L 90.7 2231.0 L 101.7 2224.5 L 116.5 2229.1 L 128.4 2242.9 L 135.8 2243.9 L 141.3 2221.8 L 134.9 2203.3 L 110.0 2179.4 L 98.0 2159.1 L 94.4 2135.2 L 94.4 2037.5 L 84.2 2013.6 L 83.3 1991.4 L 87.9 1988.7 L 91.6 1996.0 L 97.1 1996.0 L 99.9 1981.3 L 109.1 1981.3 L 110.0 1992.4 L 114.6 1996.0 L 120.2 1995.1 L 123.8 1981.3 L 131.2 1982.2 L 134.0 1996.0 L 141.3 1995.1 L 143.2 1989.6 L 152.4 1990.5 L 153.3 2016.3 L 144.1 2038.4 L 144.1 2086.3 L 148.7 2097.4 L 159.8 2099.2 L 163.5 2091.9 L 159.8 2062.4 L 160.7 2042.1 L 166.2 2032.9 L 184.6 2017.2 L 190.2 2006.2 L 197.5 1939.9 L 198.5 1847.7 L 195.7 1834.8 L 186.5 1818.2 L 185.6 1792.4 L 190.2 1787.8 L 190.2 1774.9 L 177.3 1766.7 L 194.8 1731.6 L 207.7 1694.8 L 222.4 1621.1 L 227.9 1611.9 L 228.9 1575.0 L 251.0 1569.5 L 273.1 1582.4 L 287.8 1582.4 L 300.7 1574.1 L 298.9 1560.3 L 309.9 1552.0" />
+      <path class="scene-halo" data-halo-for="castle" d="M 13.3 2498.0 L 12.5 2496.0 L 11.8 2494.0 L 11.1 2492.0 L 10.3 2490.0 L 9.6 2488.0 L 9.6 2488.0 L 48.3 2480.6 L 64.9 2470.5 L 70.4 2461.3 L 69.5 2450.2 L 64.9 2442.9 L 35.4 2418.9 L 22.5 2406.0 L 17.9 2396.8 L 17.9 2380.2 L 28.0 2367.3 L 37.2 2361.8 L 53.8 2358.1 L 125.7 2359.0 L 134.9 2355.3 L 140.4 2348.0 L 157.0 2346.1 L 171.7 2340.6 L 185.6 2324.9 L 186.5 2308.4 L 173.6 2291.8 L 153.3 2281.6 L 114.6 2272.4 L 96.2 2262.3 L 87.0 2249.4 L 87.0 2238.3 L 90.7 2231.0 L 101.7 2224.5 L 116.5 2229.1 L 128.4 2242.9 L 135.8 2243.9 L 141.3 2221.8 L 134.9 2203.3 L 110.0 2179.4 L 98.0 2159.1 L 94.4 2135.2 L 94.4 2037.5 L 84.2 2013.6 L 83.3 1991.4 L 87.9 1988.7 L 91.6 1996.0 L 97.1 1996.0 L 99.9 1981.3 L 109.1 1981.3 L 110.0 1992.4 L 114.6 1996.0 L 120.2 1995.1 L 123.8 1981.3 L 131.2 1982.2 L 134.0 1996.0 L 141.3 1995.1 L 143.2 1989.6 L 152.4 1990.5 L 153.3 2016.3 L 144.1 2038.4 L 144.1 2086.3 L 148.7 2097.4 L 159.8 2099.2 L 163.5 2091.9 L 159.8 2062.4 L 160.7 2042.1 L 166.2 2032.9 L 184.6 2017.2 L 190.2 2006.2 L 197.5 1939.9 L 198.5 1847.7 L 195.7 1834.8 L 186.5 1818.2 L 185.6 1792.4 L 190.2 1787.8 L 190.2 1774.9 L 177.3 1766.7 L 194.8 1731.6 L 207.7 1694.8 L 222.4 1621.1 L 227.9 1611.9 L 228.9 1575.0 L 251.0 1569.5 L 273.1 1582.4 L 287.8 1582.4 L 300.7 1574.1 L 298.9 1560.3 L 309.9 1552.0" />
     </g>
 
     <path class="thread-seg travel"
@@ -1271,9 +1195,9 @@
          C 1290 3580, 1180 3680, 1200 3840
          C 1220 3930, 1330 3960, 1392 4036" />
 
-    <g transform="translate(1392 4036) scale(1.45) translate(-1392 -4036)">
-      <use href="#thread-path-proposal" class="thread-seg scene scene-line" data-scene="proposal" />
-      <use href="#thread-path-proposal" class="scene-halo" data-halo-for="proposal" />
+    <g data-scene-group="proposal">
+      <path class="thread-seg scene scene-line" data-scene="proposal" d="M 1379.6 4034.9 L 1367.3 4033.7 L 1354.9 4032.6 L 1342.5 4031.4 L 1330.2 4030.3 L 1317.8 4029.1 L 1305.4 4028.0 L 1305.4 4028.0 L 1304.6 4028.9 L 1304.6 4043.1 L 1303.7 4044.0 L 1303.7 4048.5 L 1302.8 4049.4 L 1301.9 4061.9 L 1299.2 4069.9 L 1297.4 4081.5 L 1294.7 4088.6 L 1290.3 4109.2 L 1289.4 4110.1 L 1288.5 4118.1 L 1287.6 4119.0 L 1287.6 4124.3 L 1285.8 4128.8 L 1285.8 4134.2 L 1284.9 4135.0 L 1284.9 4158.2 L 1285.8 4159.1 L 1285.8 4163.6 L 1286.7 4164.5 L 1290.3 4181.4 L 1298.3 4198.4 L 1303.7 4206.4 L 1309.9 4214.5 L 1339.4 4243.0 L 1348.3 4253.7 L 1351.8 4260.0 L 1356.3 4264.4 L 1356.3 4267.1 L 1343.8 4281.4 L 1335.8 4288.5 L 1326.9 4294.8 L 1319.7 4296.6 L 1317.0 4301.0 L 1316.2 4301.9 L 1313.5 4301.9 L 1309.9 4306.4 L 1315.9 4318.6 L 1321.9 4330.8 L 1327.9 4343.1 L 1334.0 4355.3 L 1340.0 4367.5 L 1346.0 4379.8 L 1352.0 4392.0" />
+      <path class="scene-halo" data-halo-for="proposal" d="M 1379.6 4034.9 L 1367.3 4033.7 L 1354.9 4032.6 L 1342.5 4031.4 L 1330.2 4030.3 L 1317.8 4029.1 L 1305.4 4028.0 L 1305.4 4028.0 L 1304.6 4028.9 L 1304.6 4043.1 L 1303.7 4044.0 L 1303.7 4048.5 L 1302.8 4049.4 L 1301.9 4061.9 L 1299.2 4069.9 L 1297.4 4081.5 L 1294.7 4088.6 L 1290.3 4109.2 L 1289.4 4110.1 L 1288.5 4118.1 L 1287.6 4119.0 L 1287.6 4124.3 L 1285.8 4128.8 L 1285.8 4134.2 L 1284.9 4135.0 L 1284.9 4158.2 L 1285.8 4159.1 L 1285.8 4163.6 L 1286.7 4164.5 L 1290.3 4181.4 L 1298.3 4198.4 L 1303.7 4206.4 L 1309.9 4214.5 L 1339.4 4243.0 L 1348.3 4253.7 L 1351.8 4260.0 L 1356.3 4264.4 L 1356.3 4267.1 L 1343.8 4281.4 L 1335.8 4288.5 L 1326.9 4294.8 L 1319.7 4296.6 L 1317.0 4301.0 L 1316.2 4301.9 L 1313.5 4301.9 L 1309.9 4306.4 L 1315.9 4318.6 L 1321.9 4330.8 L 1327.9 4343.1 L 1334.0 4355.3 L 1340.0 4367.5 L 1346.0 4379.8 L 1352.0 4392.0" />
     </g>
 
     <path class="thread-seg travel"
@@ -1285,9 +1209,9 @@
          C 490 6160, 810 6240, 1020 6400
          C 1140 6500, 1180 6650, 1196 6786" />
 
-    <g transform="translate(1196 6786) scale(1.45) translate(-1196 -6786)">
-      <use href="#thread-path-reader" class="thread-seg scene scene-line" data-scene="reader" />
-      <use href="#thread-path-reader" class="scene-halo" data-halo-for="reader" />
+    <g data-scene-group="reader">
+      <path class="thread-seg scene scene-line" data-scene="reader" d="M 1187.9 6795.5 L 1179.8 6805.0 L 1171.7 6814.5 L 1163.6 6824.0 L 1155.5 6833.5 L 1147.4 6843.0 L 1139.3 6852.5 L 1131.2 6862.0 L 1131.2 6862.0 L 1125.4 6863.9 L 1120.6 6872.6 L 1120.6 6882.3 L 1116.8 6886.1 L 1107.1 6886.1 L 1102.3 6880.3 L 1096.5 6878.4 L 1038.6 6896.7 L 1009.7 6910.3 L 988.4 6929.5 L 973.0 6957.5 L 959.5 6957.5 L 957.6 6959.5 L 941.2 6947.9 L 929.6 6952.7 L 922.8 6958.5 L 917.1 6958.5 L 914.2 6964.3 L 910.3 6966.2 L 881.4 6965.2 L 860.1 6970.1 L 842.8 6969.1 L 838.9 6974.9 L 811.9 6988.4 L 806.1 6984.5 L 794.5 6986.5 L 790.7 6983.6 L 775.2 6993.2 L 755.9 7000.9 L 736.6 7000.0 L 713.5 6992.3 L 703.8 6986.5 L 688.4 6972.0 L 676.8 6950.8 L 673.0 6933.4 L 673.0 6912.2 L 677.8 6889.0 L 700.9 6833.1 L 705.8 6809.9 L 710.6 6757.8 L 716.4 6738.5 L 726.0 6719.2 L 744.4 6698.0 L 771.4 6680.6 L 783.9 6663.3 L 793.6 6658.4 L 803.2 6658.4 L 810.9 6659.4 L 817.7 6664.2 L 823.5 6664.2 L 837.0 6662.3 L 852.4 6654.6 L 869.8 6639.1 L 874.6 6625.6 L 874.6 6616.0 L 865.9 6600.6 L 863.0 6587.0 L 867.8 6556.2 L 865.0 6552.3 L 866.9 6536.9 L 861.1 6534.9 L 857.2 6538.8 L 841.8 6538.8 L 828.3 6534.0 L 818.6 6526.3 L 809.0 6508.9 L 806.1 6472.2 L 794.5 6449.1 L 775.2 6432.7 L 713.5 6410.5 L 692.3 6399.9 L 682.6 6393.1 L 668.1 6377.7 L 661.4 6364.2 L 658.5 6350.7 L 661.4 6329.4 L 653.7 6326.5 L 642.1 6315.9 L 633.4 6296.6 L 636.3 6269.6 L 652.7 6227.2 L 649.8 6204.0 L 634.4 6180.9" />
+      <path class="scene-halo" data-halo-for="reader" d="M 1187.9 6795.5 L 1179.8 6805.0 L 1171.7 6814.5 L 1163.6 6824.0 L 1155.5 6833.5 L 1147.4 6843.0 L 1139.3 6852.5 L 1131.2 6862.0 L 1131.2 6862.0 L 1125.4 6863.9 L 1120.6 6872.6 L 1120.6 6882.3 L 1116.8 6886.1 L 1107.1 6886.1 L 1102.3 6880.3 L 1096.5 6878.4 L 1038.6 6896.7 L 1009.7 6910.3 L 988.4 6929.5 L 973.0 6957.5 L 959.5 6957.5 L 957.6 6959.5 L 941.2 6947.9 L 929.6 6952.7 L 922.8 6958.5 L 917.1 6958.5 L 914.2 6964.3 L 910.3 6966.2 L 881.4 6965.2 L 860.1 6970.1 L 842.8 6969.1 L 838.9 6974.9 L 811.9 6988.4 L 806.1 6984.5 L 794.5 6986.5 L 790.7 6983.6 L 775.2 6993.2 L 755.9 7000.9 L 736.6 7000.0 L 713.5 6992.3 L 703.8 6986.5 L 688.4 6972.0 L 676.8 6950.8 L 673.0 6933.4 L 673.0 6912.2 L 677.8 6889.0 L 700.9 6833.1 L 705.8 6809.9 L 710.6 6757.8 L 716.4 6738.5 L 726.0 6719.2 L 744.4 6698.0 L 771.4 6680.6 L 783.9 6663.3 L 793.6 6658.4 L 803.2 6658.4 L 810.9 6659.4 L 817.7 6664.2 L 823.5 6664.2 L 837.0 6662.3 L 852.4 6654.6 L 869.8 6639.1 L 874.6 6625.6 L 874.6 6616.0 L 865.9 6600.6 L 863.0 6587.0 L 867.8 6556.2 L 865.0 6552.3 L 866.9 6536.9 L 861.1 6534.9 L 857.2 6538.8 L 841.8 6538.8 L 828.3 6534.0 L 818.6 6526.3 L 809.0 6508.9 L 806.1 6472.2 L 794.5 6449.1 L 775.2 6432.7 L 713.5 6410.5 L 692.3 6399.9 L 682.6 6393.1 L 668.1 6377.7 L 661.4 6364.2 L 658.5 6350.7 L 661.4 6329.4 L 653.7 6326.5 L 642.1 6315.9 L 633.4 6296.6 L 636.3 6269.6 L 652.7 6227.2 L 649.8 6204.0 L 634.4 6180.9" />
     </g>
 
     <!-- the fuzzball — tangled yarn riding the tip of the thread -->
@@ -1695,23 +1619,28 @@
     if (!overlay) return;
 
     const clamp01 = (value) => Math.min(1, Math.max(0, value));
+    const lerp = (from, to, t) => from + (to - from) * t;
+    const lerpAngle = (from, to, t) => {
+      let delta = ((to - from + 540) % 360) - 180;
+      return from + delta * t;
+    };
+    const expSmooth = (dt, speed) => 1 - Math.exp(-dt * speed);
+
     let initialized = false;
     let apply = () => {};
     let wobblePhase = 0;
+    let smoothDistance = 0;
+    let smoothHeading = 0;
+    let smoothSpin = 0;
+    let tipInitialized = false;
 
     const syncOverlaySize = () => {
       overlay.style.height = `${document.documentElement.scrollHeight}px`;
     };
 
-    const resolveGeometry = (el) => {
-      if (el.tagName === 'use') {
-        const href = el.getAttribute('href') || el.getAttributeNS('http://www.w3.org/1999/xlink', 'href');
-        if (href?.startsWith('#')) {
-          const ref = document.getElementById(href.slice(1));
-          if (ref) return ref;
-        }
-      }
-      return el;
+    const scrollProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      return max > 0 ? clamp01(window.scrollY / max) : 0;
     };
 
     const tangentAt = (geometry, length, local) => {
@@ -1730,106 +1659,94 @@
       const ball = document.getElementById('thread-ball');
       const halos = new Map();
       Array.from(overlay.querySelectorAll('.scene-halo')).forEach((halo) => {
-        const geometry = resolveGeometry(halo);
-        const length = geometry.getTotalLength();
+        const length = halo.getTotalLength();
         halo.style.strokeDasharray = `${length}`;
         halo.style.strokeDashoffset = `${length}`;
         halos.set(halo.dataset.haloFor, { halo, length });
       });
       const segments = Array.from(overlay.querySelectorAll('.thread-seg')).map((path) => {
-        const geometry = resolveGeometry(path);
-        const length = geometry.getTotalLength();
+        const length = path.getTotalLength();
         path.style.strokeDasharray = `${length}`;
         path.style.strokeDashoffset = `${length}`;
-        return { path, geometry, length, sceneKey: path.dataset.scene || null };
+        return { path, length, sceneKey: path.dataset.scene || null };
       });
       const totalLength = segments.reduce((sum, seg) => sum + seg.length, 0);
+      if (!tipInitialized) {
+        smoothDistance = totalLength * scrollProgress();
+        tipInitialized = true;
+      } else if (totalLength > 0) {
+        smoothDistance = Math.min(smoothDistance, totalLength);
+      }
 
-      const sceneTransforms = {
-        castle: { cx: 14, cy: 2500, s: 1.5 },
-        proposal: { cx: 1392, cy: 4036, s: 1.45 },
-        reader: { cx: 1196, cy: 6786, s: 1.45 },
-      };
-
-      apply = (progress, dt = 0) => {
-        wobblePhase += dt * 0.0018;
-        const target = totalLength * progress;
+      apply = (drawnDistance, dt = 0) => {
+        wobblePhase += dt * 0.0012;
+        const progress = totalLength > 0 ? clamp01(drawnDistance / totalLength) : 0;
         let consumed = 0;
-        let tip = segments[0].geometry.getPointAtLength(0);
-        let heading = 0;
+        let tip = segments[0].path.getPointAtLength(0);
+        let heading = smoothHeading;
         let activeLocal = 0;
         let activeLength = segments[0].length;
-        let activeScene = null;
 
-        segments.forEach(({ path, geometry, length, sceneKey }) => {
-          const local = Math.min(Math.max(target - consumed, 0), length);
-          const drawn = `${length - local}`;
-          path.style.strokeDashoffset = drawn;
+        segments.forEach(({ path, length, sceneKey }) => {
+          const local = Math.min(Math.max(drawnDistance - consumed, 0), length);
+          path.style.strokeDashoffset = `${length - local}`;
           if (sceneKey) {
             const haloEntry = halos.get(sceneKey);
-            if (haloEntry) haloEntry.halo.style.strokeDashoffset = drawn;
+            if (haloEntry) haloEntry.halo.style.strokeDashoffset = `${length - local}`;
           }
           if (local > 0) {
-            tip = geometry.getPointAtLength(local);
-            heading = tangentAt(geometry, length, local);
+            tip = path.getPointAtLength(local);
+            heading = tangentAt(path, length, local);
             activeLocal = local;
             activeLength = length;
-            activeScene = sceneKey;
           }
           consumed += length;
         });
 
-        if (activeScene && sceneTransforms[activeScene]) {
-          const { cx, cy, s } = sceneTransforms[activeScene];
-          tip = { x: cx + (tip.x - cx) * s, y: cy + (tip.y - cy) * s };
-        }
+        const follow = expSmooth(dt, 0.022);
+        smoothHeading = lerpAngle(smoothHeading, heading, follow * 0.85);
 
+        const targetSpin = progress * 240 + Math.sin(wobblePhase * 2.2) * 3;
+        smoothSpin = lerp(smoothSpin, targetSpin, follow * 0.6);
+        const roll = (activeLocal / Math.max(activeLength, 1)) * 10;
         const scale = 0.28 + (1 - progress) * 0.72;
-        const spin = progress * 420 + Math.sin(wobblePhase * 2.4) * 8;
-        const roll = (activeLocal / Math.max(activeLength, 1)) * 18;
+
         ball.setAttribute(
           'transform',
-          `translate(${tip.x.toFixed(2)} ${tip.y.toFixed(2)}) rotate(${(heading + spin + roll).toFixed(2)}) scale(${scale.toFixed(3)})`
+          `translate(${tip.x} ${tip.y}) rotate(${smoothHeading + smoothSpin + roll}) scale(${scale})`
         );
-      };
-
-      const scrollProgress = () => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        return max > 0 ? clamp01(window.scrollY / max) : 0;
       };
 
       if (!initialized) {
         initialized = true;
 
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          window.addEventListener('scroll', () => apply(scrollProgress()), { passive: true });
+          window.addEventListener('scroll', () => {
+            smoothDistance = totalLength * scrollProgress();
+            apply(smoothDistance, 0);
+          }, { passive: true });
         } else {
-          let current = scrollProgress();
-          let velocity = 0;
-          let rafId = null;
           let lastFrameAt = performance.now();
 
           const frame = (now) => {
-            const dt = Math.min(48, now - lastFrameAt);
+            const dt = Math.min(32, now - lastFrameAt);
             lastFrameAt = now;
-            const target = scrollProgress();
-            const diff = target - current;
-            velocity = velocity * 0.78 + diff * 0.14;
-            current += velocity;
-            if (Math.abs(diff) < 0.00025 && Math.abs(velocity) < 0.00025) {
-              current = target;
-              velocity = 0;
+            const targetDistance = totalLength * scrollProgress();
+            const ease = expSmooth(dt, 0.016);
+            smoothDistance = lerp(smoothDistance, targetDistance, ease);
+            if (Math.abs(targetDistance - smoothDistance) < 0.35) {
+              smoothDistance = targetDistance;
             }
-            apply(current, dt);
-            rafId = requestAnimationFrame(frame);
+            apply(smoothDistance, dt);
+            requestAnimationFrame(frame);
           };
 
           lastFrameAt = performance.now();
-          rafId = requestAnimationFrame(frame);
+          requestAnimationFrame(frame);
         }
       }
 
-      apply(scrollProgress(), 0);
+      apply(smoothDistance, 0);
       overlay.classList.add('ready');
     };
 
